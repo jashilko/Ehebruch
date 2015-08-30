@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ehebruch", "Ehebruch\Ehebruch.csproj", "{922912F6-8BBC-4E0C-BE1D-4B0A9F5A0446}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{922912F6-8BBC-4E0C-BE1D-4B0A9F5A0446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{922912F6-8BBC-4E0C-BE1D-4B0A9F5A0446}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{922912F6-8BBC-4E0C-BE1D-4B0A9F5A0446}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{922912F6-8BBC-4E0C-BE1D-4B0A9F5A0446}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

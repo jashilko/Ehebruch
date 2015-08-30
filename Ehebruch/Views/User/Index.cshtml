@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Ehebruch.Models.UserLogin>
+
+@{
+    ViewBag.Title = "Список пользователей";
+}
+
+<div><form method="post" action="/User/Index">
+        <table>
+            <tr>
+
+                <td><p>Статус : </p></td><td> @Html.DropDownList("role",ViewBag.Roles as SelectList)</td>
+                <td><input type="submit" value="Фильтр" /> </td>
+            </tr>
+        </table>
+    </form></div>
+ 
+<h2>Список пользователей</h2>
+ 
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nic)
+        </th>
+         @if (HttpContext.Current.User.IsInRole("Администраторы"))
+        {
+        <th>
+            @Html.DisplayNameFor(model => model.pass)
+        </th>
+         }
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        <th></th>
+    </tr>
+ 
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nic)
+        </td>
+        @if (HttpContext.Current.User.IsInRole("Администраторы"))
+        {
+        <td>
+            @Html.DisplayFor(modelItem => item.pass)
+        </td>
+        }
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        @if (HttpContext.Current.User.IsInRole("Администраторы"))
+        {
+        <td>
+            @Html.ActionLink("Редактировать", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Удалить", "Delete", new { id=item.id })
+        </td>
+        }
+    </tr>
+}
+</table>
