@@ -1,0 +1,71 @@
+﻿@model Ehebruch.Models.Account.UserProfile
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<fieldset>
+    <legend>UserProfile</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.dateOfBirthday)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.dateOfBirthday)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.country)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.country)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.region)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.region)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.sity)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.sity)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.wish)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.wish)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.height)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.height)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.weight)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.weight)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.sex)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.sex)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,91 @@
+﻿@model Ehebruch.Models.Account.UserProfile
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>UserProfile</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.dateOfBirthday)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.dateOfBirthday)
+            @Html.ValidationMessageFor(model => model.dateOfBirthday)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.country)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.country)
+            @Html.ValidationMessageFor(model => model.country)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.region)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.region)
+            @Html.ValidationMessageFor(model => model.region)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.sity)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.sity)
+            @Html.ValidationMessageFor(model => model.sity)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.wish)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.wish)
+            @Html.ValidationMessageFor(model => model.wish)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.height)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.height)
+            @Html.ValidationMessageFor(model => model.height)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.weight)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.weight)
+            @Html.ValidationMessageFor(model => model.weight)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.sex)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.sex)
+            @Html.ValidationMessageFor(model => model.sex)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

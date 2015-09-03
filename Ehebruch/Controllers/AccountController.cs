@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Ehebruch.Models.Account;
 using Ehebruch.Models;
+using Ehebruch.Providers;
 
 
 namespace Ehebuch.Controllers
@@ -23,7 +24,7 @@ namespace Ehebuch.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (ValidateUser(model.UserName, model.Password))
+                if (Membership.ValidateUser(model.UserName, model.Password))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl))
@@ -42,6 +43,7 @@ namespace Ehebuch.Controllers
             }
             return View(model);
         }
+        
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
@@ -49,6 +51,33 @@ namespace Ehebuch.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+        [HttpGet]
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Register(RegisterUser model)
+        {
+            if (ModelState.IsValid)
+            {
+                MembershipUser membershipUser = ((EheMembershipProvider)Membership.Provider).CreateUser(model.Email, model.Password, model.Nic);
+
+                if (membershipUser != null)
+                {
+                    FormsAuthentication.SetAuthCookie(model.Email, false);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Ошибка при регистрации");
+                }
+            }
+            return View(model);
+        }
+
+        /*
         private bool ValidateUser(string login, string password)
         {
             bool isValid = false;
@@ -74,5 +103,6 @@ namespace Ehebuch.Controllers
             }
             return isValid;
         }
+         */ 
     }
 }

@@ -21,7 +21,7 @@ namespace Ehebruch.Controllers
 
             List<Role> roles = db.Roles.ToList();
             roles.Insert(0, new Role { Id = 0, Name = "Все" });
-            ViewBag.Roles = new SelectList(roles, "Id", "Name"); ;
+            ViewBag.Roles = new SelectList(roles, "Id", "Name");
             return View(users);
         }
 
@@ -56,8 +56,6 @@ namespace Ehebruch.Controllers
             UserLogin user = db.UserLogins.Find(id);
             SelectList roles = new SelectList(db.Roles, "id", "Name", user.RoleId);
             ViewBag.Roles = roles;
-            SelectList profils = new SelectList(db.UserProfiles, "id", "sity", user.UserProfileId);
-            ViewBag.Profils = profils;
 
             return View(user);
         }
