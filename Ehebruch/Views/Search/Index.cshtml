@@ -1,0 +1,178 @@
+﻿@model Ehebruch.Models.SearchProfiles
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutBoot3.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <h4>Поиск анкет</h4>
+            <br />
+            @Html.ValidationSummary()
+    
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="col-md-3">
+                            <label class="control-label">Ищу:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="controls">
+                                @Html.DropDownListFor(model => model.SearchSex, new[]   { new SelectListItem() { Text = "Мужчину", Value = "true" }, 
+                                    new SelectListItem() { Text = "Женщину", Value = "false" }}, new { @class= "form-control"})  
+                            </div>                               
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-4">
+                            <label class="control-label">Город:</label>
+                        </div>
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.Sity, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row text-center">
+                            <label class="control-label">Возраст</label>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="controls">
+                                    @Html.DropDownListFor(model => model.AgeTo,
+                                    new SelectList(
+                                        Enumerable.Range(18, 99).Select(x => new { Value = x, Text = x }),
+                                        "Value",
+                                        "Text"),
+                                    new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="controls">
+                                    @Html.DropDownListFor(model => model.AgeTo,
+                                    new SelectList(
+                                        Enumerable.Range(18, 99).Select(x => new { Value = x, Text = x }),
+                                        "Value",
+                                        "Text", 
+                                        99),
+                                    new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="row text-center">
+                            
+                            <label class="control-label">Рост от и до</label>
+                                
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="controls">
+                                    @Html.DropDownListFor(model => model.heightFrom,
+                                    new SelectList(
+                                        Enumerable.Range(150, 200).Select(x => new { Value = x, Text = x }),
+                                        "Value",
+                                        "Text"),
+                                    new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="controls">
+                                    @Html.DropDownListFor(model => model.heightTo,
+                                    new SelectList(
+                                        Enumerable.Range(150, 200).Select(x => new { Value = x, Text = x }),
+                                        "Value",
+                                        "Text", 
+                                        200),
+                                    new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="row text-center">
+                            <label class="control-label">Вес (От и До)</label>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="controls">
+                                    @Html.DropDownListFor(model => model.weightFrom,
+                                    new SelectList(
+                                        Enumerable.Range(40, 150).Select(x => new { Value = x, Text = x }),
+                                        "Value",
+                                        "Text"),
+                                    new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+                            <div class="col-md-6 ">
+                                <div class="controls">
+                                    @Html.DropDownListFor(model => model.weightTo,
+                                    new SelectList(
+                                        Enumerable.Range(41, 150).Select(x => new { Value = x, Text = x }),
+                                        "Value",
+                                        "Text", 150),
+                                    new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <br /><label class="control-label">Ваши желания: </label>
+                        <br />
+                        <div class="checkbox">
+                             @foreach (KeyValuePair<string, int> c in ViewBag.wishe)
+                                    {
+                                        <input type="checkbox" name="wishe" value="@c.Value"/>@c.Key <br />
+                                    }                    
+                        </div>
+                        <br />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class= "col-md-12">
+                            <input type="submit" class="btn-group btn-group-justified" value="Поиск" name="SearchButton" />
+                        </div>
+                    </div>               
+                </div>
+            </div>
+        
+        // Результаты. 
+            if (Model.Profiles != null && Model.Profiles.Count() > 0)
+        {
+            foreach (var prof in Model.Profiles)
+            {
+                string path = "../../Files/" + @prof.AvatarPath;
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="@path" class="img-responsive" />
+                    </div>
+                    <div class="col-md-8">
+                        <label class="control-label">@prof.UserLogin.nic</label>
+                        <br />
+                        <label class="control-label">@prof.dateOfBirthday</label>
+                        <br />
+                        <label class="control-label">@prof.sity</label>
+                    </div>
+                    
+                </div>
+            }
+            
+        }
+
+        }
+
+    </div>
+</div>
+
+

@@ -30,7 +30,7 @@ namespace Ehebruch.Providers
             // получаем id пользователя из таблицы Users по логину
             int userId = db.UserLogins.Where(u => u.nic.Equals(username)).FirstOrDefault().id;
             // по этому id извлекаем профиль из таблицы профилей
-            UserProfile profile = db.UserProfiles.Where(u => u.UserID == userId).FirstOrDefault();
+            UserProfile profile = db.UserProfiles.Where(u => u.UserLoginID == userId).FirstOrDefault();
             if (profile != null)
             {
                 foreach (SettingsProperty prop in collection)

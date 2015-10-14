@@ -21,11 +21,12 @@ namespace Ehebruch.Models.Account
         public string Descript { get; set; }
 
         [Required]
-        public DateTime UploadDate { get; set; }
+        public DateTime? UploadDate { get; set; }
 
         [Required]
         [ScaffoldColumn(false)]
-        public int ProfileID { get; set; }
+        public int UserProfileid { get; set; }
+        public UserProfile UserProfile { get; set; }
     
     }
 }

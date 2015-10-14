@@ -1,71 +1,85 @@
 ﻿@model Ehebruch.Models.Account.UserProfile
 
 @{
-    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutBoot3.cshtml";
 }
 
-<h2>Index</h2>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="row">
+            <h3>Анкета пользователя @Model.UserLogin.nic</h3>
+        </div>
+        <ul id="myTab" class="nav nav-tabs">
+            <li class="active"><a href="#profile" data-toggle="tab">Информация</a></li>
+            <li><a href="#foto" data-toggle="tab">Фотографии</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="profile">
+                <br />
+                <div class="col-md-4">
+                    @{
+                        string path = "../../Files/" + Model.AvatarPath; 
+                        <img src="@path" title="Это я" class="img-responsive" />
+                    }
+                    <br />
+                    написать сообщение
+                    <br />
+                    @Html.ActionLink("Редактировать", "Edit", new { id = @Model.id })
+                </div>
+                    <div class ="col-md-8">
+                    <p>
+                        <div class="row">
+                            <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.dateOfBirthday)</label>
+                            <div class="col-md-6">@Html.DisplayFor(model => model.dateOfBirthday)</div>
+                        </div>
+                    </p>
 
-<fieldset>
-    <legend>UserProfile</legend>
+                    <p>
+                        <div class="row">
+                            <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.country)</label>
+                            <div class="col-md-6">@Html.DisplayFor(model => model.country)</div>
+                        </div>
+                    </p>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.dateOfBirthday)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.dateOfBirthday)
-    </div>
+                    <p>
+                        <div class="row">
+                            <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.region)</label>
+                            <div class="col-md-6">@Html.DisplayFor(model => model.region)</div>
+                        </div>
+                    </p>
+                    <div class="row">
+                        <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.sity)</label>
+                        <div class="col-md-6">@Html.DisplayFor(model => model.sity)</div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.wish)</label>
+                        <div class="col-md-6">@Html.DisplayFor(model => model.wish)</div>
+                    </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.country)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.country)
-    </div>
+                    <div class="row">
+                        <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.height)</label>
+                        <div class="col-md-6">@Html.DisplayFor(model => model.height)</div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.weight)</label>
+                        <div class="col-md-6">@Html.DisplayFor(model => model.weight)</div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.sex)</label>
+                        @if (Model.sex == true)
+                        {<div class="col-md-6">Мужчина</div>}
+                        else
+                        {<div class="col-md-6">Женщина</div>}
+                    </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.region)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.region)
-    </div>
+                </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.sity)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.sity)
-    </div>
+            </div>
+            <div class="tab-pane fade" id="foto">
+                @Html.Partial("FotoShow")
+            </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.wish)
+        </div>
     </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.wish)
-    </div>
+</div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.height)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.height)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.weight)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.weight)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.sex)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.sex)
-    </div>
-</fieldset>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

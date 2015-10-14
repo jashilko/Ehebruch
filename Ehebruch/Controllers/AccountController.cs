@@ -18,6 +18,17 @@ namespace Ehebuch.Controllers
         {
             return View();
         }
+
+        public ActionResult RegLogin()
+        {
+            return View();
+        }
+        
+        public ActionResult ContexName()
+        {
+            ViewBag.ContexName = "Костя";
+            return PartialView();
+        }
         
         [HttpPost]
         public ActionResult Login(LogViewModel model, string returnUrl)
@@ -33,7 +44,7 @@ namespace Ehebuch.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Request");
+                        return RedirectToAction("Index", "Profile");
                     }
                 }
                 else
@@ -66,15 +77,15 @@ namespace Ehebuch.Controllers
 
                 if (membershipUser != null)
                 {
-                    FormsAuthentication.SetAuthCookie(model.Email, false);
-                    return RedirectToAction("Index", "Home");
+                    FormsAuthentication.SetAuthCookie(model.Nic, false);
+                    return RedirectToAction("Create", "Profile");
                 }
                 else
                 {
                     ModelState.AddModelError("", "Ошибка при регистрации");
                 }
             }
-            return View(model);
+            return View("Register");
         }
 
         /*

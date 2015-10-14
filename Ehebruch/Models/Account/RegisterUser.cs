@@ -24,6 +24,7 @@ namespace Ehebruch.Models.Account
         public string Password { get; set; }
          
         [Required]
+        [Display(Name = "Повторите пароль")]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         [DataType(DataType.Password)]
         public string PasswordConfirm { get; set; }

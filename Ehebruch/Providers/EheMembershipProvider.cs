@@ -59,7 +59,7 @@ namespace Ehebruch.Providers
  
                         _db.UserLogins.Add(user);
                         _db.SaveChanges();
-                        membershipUser=GetUser(nic, false);
+                        membershipUser = GetUser(nic, false);
                         return membershipUser;
                     }
                 }
@@ -84,7 +84,7 @@ namespace Ehebruch.Providers
                     {
                         UserLogin user = users.First();
                         MembershipUser memberUser = new MembershipUser("EheMembershipProvider", user.nic, null, null, null, null,
-                            false, false, user.CreationDate.Value, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue);
+                            false, false, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue);
                         return memberUser;
                     }
                 }

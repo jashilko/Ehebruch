@@ -12,6 +12,6 @@ namespace Ehebruch.Models
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserLogin> UserLogins { get; set; }
         public DbSet<Account.UserProfile> UserProfiles { get; set; }
-        public DbSet<Account.UserFoto> UserFotos { get; set; }
+        public DbSet<Account.UserFoto> UserFotoes { get; set; }
     }
 }

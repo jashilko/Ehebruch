@@ -16,7 +16,8 @@ namespace Ehebruch.Models.Account
     
         [Required]
         [ScaffoldColumn(false)]
-        public int UserID { get; set; }
+        public int UserLoginID { get; set; }
+        public UserLogin UserLogin { get; set; }
 
         [Required]
         [Display(Name = "Дата рождения")]
@@ -58,9 +59,12 @@ namespace Ehebruch.Models.Account
 
         [Display(Name = "Аватар")]
         [ScaffoldColumn(false)]
-        public string AvatarPath { get; set; } 
+        public string AvatarPath { get; set; }
 
+        public IEnumerable<UserFoto> Fotoes { get; set; }
 
+        
+        
 
     }
 

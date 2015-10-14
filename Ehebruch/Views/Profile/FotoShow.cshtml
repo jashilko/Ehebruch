@@ -1,0 +1,29 @@
+﻿@model UserProfile
+@using Ehebruch.Models.Account
+
+<br />
+<p>Всего фотографий: @(Model.Fotoes.Count<UserFoto>())</p>
+@Html.ActionLink("Добавить фотографий", "AddFoto")
+<br />
+
+@foreach (UserFoto item in Model.Fotoes)
+{
+    string path = "../../Files/" + @item.Path;
+    <div id="results">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="@path" class="img-responsive" /></div>
+            <br />
+            <label class="col-md-4 control-label ">@item.Descript</label>
+
+            <div class="col-md-4">
+                @using (Ajax.BeginForm("DeleteFoto", new object { }, new AjaxOptions { UpdateTargetId = "results" }, new {role = "form"}))
+                {
+                    @Html.Hidden("fotoid", item.id)
+                    <input type="submit" value="Удалить" />
+                }
+            </div>
+        </div>
+    </div>
+    <br />    
+}

@@ -1,58 +1,49 @@
 ﻿@model Ehebruch.Models.Account.LogViewModel
  
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_LayoutBoot3.cshtml";
 }
- 
-<!DOCTYPE html>
- 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
-    <title>Вход в систему</title>
-</head>
-<body>
-    <script src="~/Scripts/jquery-1.7.1.min.js"></script>
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-     
-    <h2>Вход в систему</h2>
-    <p>Введите свой логин и пароль для входа в систему</p>
-     
-    @using (Html.BeginForm()) {
-        @Html.ValidationSummary(true)
-     
-        <fieldset>
-            <legend>Войти в систему</legend>
-     
-            <div class="editor-label">
-                @Html.LabelFor(model => model.UserName)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.UserName)
-                @Html.ValidationMessageFor(model => model.UserName)
-            </div>
-     
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Password)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Password)
-                @Html.ValidationMessageFor(model => model.Password)
-            </div>
-     
-            <div class="editor-label">
-                @Html.LabelFor(model => model.RememberMe)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.RememberMe)
-            </div>
-     
-            <p>
-                <input type="submit" value="Войти" />
-            </p>
-        </fieldset>
-    }
-</body>
-</html>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Ввведите логин и пароль или зарегистрируйтесь</h4>
+    <hr />
+    @Html.ValidationSummary()
+    <div class="form-group">
+        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-6 col-md-offset-1">
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label"  })
+        <div class="col-md-6 col-md-offset-1">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.RememberMe, new { @class = "col-md-2 control-label" })
+        <div class="col-md-6 col-md-offset-1 vcenter">
+            @Html.CheckBoxFor(m => m.RememberMe)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="text-center">
+            <input type="submit" class="btn-group btn-group-justified" value="Логин" />
+        </div>
+    </div>
+}  
+ @using (Html.BeginForm("Register", "Account", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+ {
+       <div class="form-group">
+        <div class="text-center">
+            <input type="submit" class="btn-group btn-group-justified" value="Регистрация" />
+        </div>
+    </div>  
+ }
+
+        </div>
+    </div>

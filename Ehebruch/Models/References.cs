@@ -7,7 +7,7 @@ namespace Ehebruch.Models
 {
     public enum EnumWish
     {
-        flirting = 1,
+        флирт = 1,
         meeting = 2, 
         cafe = 3,
         sex = 4

@@ -1,0 +1,43 @@
+﻿@model Ehebruch.Models.Account.UserProfile
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutBoot3.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-3">
+        @using (Ajax.BeginForm("AddFoto", new object { }, new AjaxOptions { UpdateTargetId = "results" }, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+        {
+            <div class="form-group">
+                <div class ="row">
+                    <div class="col-md-8">
+                        <label class="control-label">Выберите фото: </label>
+                    </div>
+                </div>
+                <div class ="row">
+                    <div class="col-md-8">
+                        <input type="file" id="error" name="error"  />
+                    </div>
+                </div>
+                <div class ="row">
+                    <div class="col-md-8">
+                        <label class="control-label">Добавьте описание: </label>
+                        <textarea class="form-control" rows="3" name="descript"></textarea>
+                    </div>
+                </div>
+                
+
+                <input type="submit" value="Добавить" />
+            </div>            
+        }
+            
+        <div id="results">@Html.Partial("FotoShow")</div>
+        
+
+        
+
+    </div>
+</div>
+
+

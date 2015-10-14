@@ -1,91 +1,110 @@
 ﻿@model Ehebruch.Models.Account.UserProfile
-
+ 
 @{
-    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutBoot3.cshtml";
 }
 
-<h2>Edit</h2>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        @using (Html.BeginForm("Edit", "Profile", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype="multipart/form-data" }))
+        {
+            <h4>Заполните свой профиль</h4>
+            <hr />
+            @Html.ValidationSummary()
+            <div class="form-group">
+                @Html.LabelFor(m => m.country, new { @class = "col-md-2 control-label" })
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.country, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.region, new { @class = "col-md-2 control-label" })
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.region, new { @class = "form-control" })
+                </div>
+            </div>       
+            <div class="form-group">
+                @Html.LabelFor(m => m.sity, new { @class = "col-md-2 control-label" })
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.sity, new { @class = "form-control" })
+                </div>
+            </div>       
+   
+            <div class="form-group">
+                @Html.LabelFor(m => m.dateOfBirthday, new { @class = "col-md-3 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.dateOfBirthday, new { @class = "form-control" })
+                </div>
+            </div>       
+            <div class="form-group">
+                @Html.LabelFor(m => m.sex, new { @class = "col-md-2 control-label" })
+                <div class="col-md-7">
+                    <div class="controls">
+                    @Html.DropDownListFor(model => model.sex, new[]   { new SelectListItem() { Text = "Мужской", Value = "true" }, 
+                    new SelectListItem() { Text = "Женский", Value = "false" }}, new { @class= "form-control"})  
+                    </div>                   
+                </div>
+            </div>  
 
-@using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
+            <div class="form-group">
+                @Html.LabelFor(m => m.height, new { @class = "col-md-2 control-label" })
+                <div class="col-md-3">
+                    <div class="controls">
+                    @Html.DropDownListFor(model => model.height, 
+                    new SelectList(
+                        Enumerable.Range(150, 250).Select(x => new { Value = x, Text = x }), 
+                        "Value", 
+                        "Text"), 
+                    new { @class= "form-control"})  
+                    </div>                          
+                </div>
+                @Html.LabelFor(m => m.weight, new { @class = "col-md-1 control-label" })
+                <div class="col-md-3">
+                    <div class="controls">
+                    @Html.DropDownListFor(model => model.weight, 
+                    new SelectList(
+                        Enumerable.Range(50, 150).Select(x => new { Value = x, Text = x }), 
+                        "Value", 
+                        "Text"), 
+                    new { @class= "form-control"})  
+                    </div>                          
+                                          
+                </div>
+            </div>       
+          
+            <div class="form-group">
+                @Html.LabelFor(m => m.wish, new { @class = "col-md-2 control-label" })
+                <div class="col-md-6">
+                    <div class="checkbox">
+                         @foreach (KeyValuePair<string, short> c in ViewBag.wishe)
+                                {
+                                    <input type="checkbox" name="selectedwishes" value="@c.Value" @(c.Value == (Model.wish & c.Value) ? "checked=\"checked\"" : "")/>@c.Key <br />
+                                }                    
+                    </div>
+                </div>
+            </div>  
+            
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.AvatarPath, new { @class = "col-md-2 control-label" })
+                <div class="col-md-6">
+                    @if (! String.IsNullOrEmpty(Model.AvatarPath))
+                    {
+                        string path = "../../Files/" + Model.AvatarPath;
+                        <div class="col-md-4"><img src="@path" class="img-responsive" /></div>
+                    }
+                    <input type="file" id="error" name="error"  />
+                </div>
+            </div>
+            
+                             
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-default" value="Сохранить" />
+                </div>
+            </div>               
+        }
 
-    <fieldset>
-        <legend>UserProfile</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.dateOfBirthday)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.dateOfBirthday)
-            @Html.ValidationMessageFor(model => model.dateOfBirthday)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.country)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.country)
-            @Html.ValidationMessageFor(model => model.country)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.region)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.region)
-            @Html.ValidationMessageFor(model => model.region)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.sity)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.sity)
-            @Html.ValidationMessageFor(model => model.sity)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.wish)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.wish)
-            @Html.ValidationMessageFor(model => model.wish)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.height)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.height)
-            @Html.ValidationMessageFor(model => model.height)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.weight)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.weight)
-            @Html.ValidationMessageFor(model => model.weight)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.sex)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.sex)
-            @Html.ValidationMessageFor(model => model.sex)
-        </div>
-
-        <p>
-            <input type="submit" value="Save" />
-        </p>
-    </fieldset>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    </div>
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutBoot3.cshtml";
+}
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <h3>Выберите файл для загрузки</h3>
+        @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+        {
+            <input type="file" name="upload" /><br>
+            <input type="submit" value="Загрузить" />
+        }
+    </div>
+</div>

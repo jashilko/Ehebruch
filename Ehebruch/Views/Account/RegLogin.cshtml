@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "RegLogin";
+    Layout = "~/Views/Shared/_LayoutBoot3.cshtml";
+}
+
+<h2>Вход или регистрация</h2>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+    <ul id="myTab" class="nav nav-tabs">
+          <li class="active"><a href="#home" data-toggle="tab">Вход</a></li>
+          <li><a href="#profile" data-toggle="tab">Регистрация</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+          <div class="tab-pane fade in active" id="home">
+            @Html.Partial("LoginPartial")
+          </div>
+          <div class="tab-pane fade" id="profile">
+            @Html.Partial("Register")
+          </div>
+          
+        </div>
+    </div>
+</div>
+
+
+
+
+
