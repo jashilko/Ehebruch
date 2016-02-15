@@ -1,0 +1,33 @@
+﻿@model Ehebruch.Models.Message
+
+@{
+    ViewBag.Title = "Сообщения";
+    Layout = "~/Views/Shared/_LayoutBoot3.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        @{
+        string path = "../../Files/" + @ViewBag.Rec.AvatarPath;
+        <img src="@path" class="img-responsive" /> <label class="col-md-6 control-label">Чат с пользователем ааа</label>
+        }
+        <div class="row">
+            <div class="col-md-12">
+                <textarea class="form-control" rows="21" id="results"> @Html.Partial("SendMessage")  </textarea>
+            </div>
+        </div>
+        <div class="row">
+            @using (Ajax.BeginForm("SendMessage", new object { }, new AjaxOptions { UpdateTargetId = "results" }, new { @class = "form-horizontal", role = "form"}))
+            {
+            <div class="col-md-9">
+                <textarea class="form-control" rows="3" name="Mes"></textarea>
+            </div>
+            <div class="col-md-3">
+                <input type="submit" value="Отправить" />
+            </div>
+
+
+            }
+        </div>
+    </div>
+</div>

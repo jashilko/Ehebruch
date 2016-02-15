@@ -13,5 +13,6 @@ namespace Ehebruch.Models
         public DbSet<UserLogin> UserLogins { get; set; }
         public DbSet<Account.UserProfile> UserProfiles { get; set; }
         public DbSet<Account.UserFoto> UserFotoes { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }

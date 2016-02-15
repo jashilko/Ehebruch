@@ -124,6 +124,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Models\Account\RegisterUser.cs" />
     <Compile Include="Models\Account\UserFoto.cs" />
     <Compile Include="Models\EhebruchContex.cs" />
+    <Compile Include="Models\Message.cs" />
     <Compile Include="Models\References.cs" />
     <Compile Include="Models\Account\Role.cs" />
     <Compile Include="Models\Account\UserLogin.cs" />
@@ -263,6 +265,10 @@
     <Content Include="Views\Profile\FotoShow.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\Profile\AddFoto.cshtml" />
+    <Content Include="Views\Message\Index.cshtml" />
+    <Content Include="Views\Message\SendMessage.cshtml" />
+    <Content Include="Views\Message\Index2.cshtml" />
+    <Content Include="Views\Message\Im.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Files\" />
@@ -286,7 +292,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>57564</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:51985/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
