@@ -1,4 +1,4 @@
-﻿@model Ehebruch.Models.Message
+﻿@model IEnumerable<Ehebruch.Models.Message>
 
 @{
     ViewBag.Title = "Сообщения";
@@ -7,26 +7,37 @@
 
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
-        @{
-        string path = "../../Files/" + @ViewBag.Rec.AvatarPath;
-        <img src="@path" class="img-responsive" /> <label class="col-md-6 control-label">Чат с пользователем ааа</label>
-        }
         <div class="row">
-            <div class="col-md-12">
-                <textarea class="form-control" rows="21" id="results"> @Html.Partial("SendMessage")  </textarea>
-            </div>
+            <h3>Сообщения</h3>
         </div>
-        <div class="row">
-            @using (Ajax.BeginForm("SendMessage", new object { }, new AjaxOptions { UpdateTargetId = "results" }, new { @class = "form-horizontal", role = "form"}))
+        <table class="table table-hover">
+
+            @foreach (var item in Model)
             {
-            <div class="col-md-9">
-                <textarea class="form-control" rows="3" name="Mes"></textarea>
-            </div>
-            <div class="col-md-3">
-                <input type="submit" value="Отправить" />
-            </div>
+                <tr>
+                    <td>
+                        @item.SenderId - @item.RecipientId
+                    </td>
+                    <td>
+                        @item.CreatedTime
+                    </td>
+                    <td>@item.TextMessage
+                    </td>
+                </tr>                                
+            }
 
-
+        </table>
+        <div class="row">
+            @using (Html.BeginForm("Index", "Message", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <input type="hidden" value="@ViewBag.rec.id" name="SenderId" />
+                <input type="hidden" value="@ViewBag.userwith.id" name="RecipientId" />
+                <div class="col-md-9">
+                    <textarea class="form-control" rows="3" name="TextMessage"></textarea>
+                </div>
+                <div class="col-md-3">
+                    <input type="submit" value="Отправить" />
+                </div>                
             }
         </div>
     </div>

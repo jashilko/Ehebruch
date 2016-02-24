@@ -14,18 +14,43 @@ namespace Ehebruch.Controllers
     public class MessageController : Controller
     {
         private EhebruchContex db = new EhebruchContex();
+
         //
         // GET: /Message/
-
-        public ActionResult Index()
+        public ActionResult Index(int id, Message request)
         {
+            if (!string.IsNullOrEmpty(request.TextMessage))
+            {
+                request.id = 0;
+                request.CreatedTime = DateTime.Now;
+                db.Messages.Add(request);
+                db.SaveChanges();
+            }
             // ищем пользователя. 
             UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
             // Ищем его профиль. 
             UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginID == user.id).FirstOrDefault();
-            // Выбираем список его сообщений. 
+            // С кем ведем беседу. 
+            UserProfile userwith = db.UserProfiles.Include(u => u.UserLogin).Where(u => u.id == id).FirstOrDefault();
+            // Выбираем список сообщений. 
+            var dl = db.Messages.Where(m => (m.RecipientId == userwith.id && m.SenderId == userprofile.id) || (m.RecipientId == userprofile.id || m.SenderId == userwith.id)).OrderBy(m => m.CreatedTime)
+                .Select(m => new {id = m.id, TextMessage = m.TextMessage, CreatedTime = m.CreatedTime, RecipientId = m.RecipientId, SenderId = m.SenderId});
+
+            List<Message> MList = new List<Message>();
+            foreach (var m in dl)
+            {
+                Message mm = new Message();
+                mm.CreatedTime = m.CreatedTime;
+                mm.RecipientId = m.RecipientId;
+                mm.SenderId = m.SenderId;
+                mm.TextMessage = m.TextMessage;
+                MList.Add(mm);
+            }
+
+
             ViewBag.Rec = userprofile;
-            return View();
+            ViewBag.userwith = userwith;
+            return View(MList.ToList());
         }
 
         [HttpPost]
@@ -46,7 +71,7 @@ namespace Ehebruch.Controllers
         }
 
         [HttpGet]
-        public ActionResult Im()
+        public ActionResult Im(int id = 0)
         {
             UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
             UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginID == user.id).FirstOrDefault();
@@ -54,30 +79,38 @@ namespace Ehebruch.Controllers
             List<Message> MesList = new List<Message>();
             List<Dialog> DList = new List<Dialog>();
 
-           DateTime MaxMes = db.Messages.Where(m => (m.SenderId == userprofile.id)).Max(m => m.CreatedTime);
-            // Выбираем всех, с кем общался. 
-            var bb = db.Messages.Where(m => m.SenderId == userprofile.id).GroupBy(m => m.RecipientId);
-                
-            foreach (var c in bb)
+            if (id == 0)
             {
-                //MaxMes = db.Messages.Where(m => (m.SenderId == userprofile.id && m.RecipientId == c.Key)).Max(m => m.CreatedTime);
-                // У каждого с кем общался находим время последнего сообщения. 
-                MaxMes = c.Max(m => m.CreatedTime);
+                DateTime MaxMes = db.Messages.Where(m => (m.SenderId == userprofile.id)).Max(m => m.CreatedTime);
+                // Выбираем всех, с кем общался. 
+                var bb = db.Messages.Where(m => m.SenderId == userprofile.id).GroupBy(m => m.RecipientId);
 
-                // Выбираем последнее сообщение. 
-                var ddd = c.Where(m => (m.SenderId == userprofile.id && m.RecipientId == c.Key && m.CreatedTime == MaxMes)).
-                    Select(m => new Dialog{IdPerson = m.RecipientId, TextMessage = m.TextMessage });
+                foreach (var c in bb)
+                {
+                    //MaxMes = db.Messages.Where(m => (m.SenderId == userprofile.id && m.RecipientId == c.Key)).Max(m => m.CreatedTime);
+                    // У каждого с кем общался находим время последнего сообщения. 
+                    MaxMes = c.Max(m => m.CreatedTime);
 
-                foreach (Dialog m in ddd)
-                    DList.Add(m);
+                    // Выбираем последнее сообщение. 
+                    var ddd = c.Where(m => (m.SenderId == userprofile.id && m.RecipientId == c.Key && m.CreatedTime == MaxMes)).
+                        Select(m => new Dialog { IdPerson = m.RecipientId, TextMessage = m.TextMessage });
+
+                    foreach (Dialog m in ddd)
+                    {
+                        m.AvatarPath = db.UserProfiles.Find(m.IdPerson).AvatarPath;
+                        m.nic = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.id == m.IdPerson).Select(p => p.UserLogin.nic).FirstOrDefault();
+                        DList.Add(m);
+                    }
+                }
+                return View(DList.ToList());
+            }
+            else
+            {
+                ViewBag.Rec = userprofile;
+                return Index(id, null);
             }
             
-
-            //ViewBag.Rec = userprofile;
-            return View(DList.ToList());
         }
-
-        
 
     }
 }

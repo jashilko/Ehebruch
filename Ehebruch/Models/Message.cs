@@ -9,9 +9,6 @@ namespace Ehebruch.Models
 {
     public class Message
     {
-        // ИД 
-        [Required]
-        [ScaffoldColumn(false)]
         public int id { get; set; }
 
         public int SenderId { get; set; }
@@ -27,7 +24,11 @@ namespace Ehebruch.Models
 
     public class Dialog
     {
+        
         public int IdPerson { get; set; }
+        public String nic { get; set; }
+
+        public String AvatarPath { get; set; }
         public String TextMessage { get; set; }
     }
 }
