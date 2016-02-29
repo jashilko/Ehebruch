@@ -21,7 +21,7 @@ namespace Ehebruch.Models.Account
 
         [Required]
         [Display(Name = "Дата рождения")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.Date)]
         public DateTime dateOfBirthday { get; set; }
 

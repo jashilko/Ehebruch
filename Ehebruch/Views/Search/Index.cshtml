@@ -23,8 +23,8 @@
                         <div class="col-md-8">
                             <div class="controls">
                                 @Html.DropDownListFor(model => model.SearchSex, new[]   { new SelectListItem() { Text = "Мужчину", Value = "true" }, 
-                                    new SelectListItem() { Text = "Женщину", Value = "false" }}, new { @class= "form-control"})  
-                            </div>                               
+                                    new SelectListItem() { Text = "Женщину", Value = "false" }}, new { @class = "form-control" })
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -58,7 +58,7 @@
                                     new SelectList(
                                         Enumerable.Range(18, 99).Select(x => new { Value = x, Text = x }),
                                         "Value",
-                                        "Text", 
+                                        "Text",
                                         99),
                                     new { @class = "form-control input-sm" })
                                 </div>
@@ -68,9 +68,9 @@
 
                     <div class="col-md-4">
                         <div class="row text-center">
-                            
+
                             <label class="control-label">Рост от и до</label>
-                                
+
                         </div>
                         <div class="row">
                             <div class="col-md-6">
@@ -89,7 +89,7 @@
                                     new SelectList(
                                         Enumerable.Range(150, 200).Select(x => new { Value = x, Text = x }),
                                         "Value",
-                                        "Text", 
+                                        "Text",
                                         200),
                                     new { @class = "form-control input-sm" })
                                 </div>
@@ -127,48 +127,65 @@
                 </div>
                 <div class="row">
                     <div class="col-md-5">
-                        <br /><label class="control-label">Ваши желания: </label>
+                        <br />
+                        <label class="control-label">Ваши желания: </label>
                         <br />
                         <div class="checkbox">
-                             @foreach (KeyValuePair<string, int> c in ViewBag.wishe)
-                                    {
-                                        <input type="checkbox" name="wishe" value="@c.Value"/>@c.Key <br />
-                                    }                    
+                            @foreach (KeyValuePair<string, int> c in ViewBag.wishe)
+                            {
+                                if ((string.IsNullOrEmpty(Model.SearchButton)) || ((Model.wish & c.Value) == c.Value))
+                                {
+                                    <input type="checkbox" name="wishe" value="@c.Value" checked/>@c.Key <br />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name="wishe" value="@c.Value" />@c.Key <br />
+                                }
+                            }
                         </div>
                         <br />
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <div class= "col-md-12">
+                        <div class="col-md-12">
                             <input type="submit" class="btn-group btn-group-justified" value="Поиск" name="SearchButton" />
                         </div>
-                    </div>               
+                    </div>
                 </div>
             </div>
         
-        // Результаты. 
+            // Результаты. 
+
             if (Model.Profiles != null && Model.Profiles.Count() > 0)
-        {
-            foreach (var prof in Model.Profiles)
             {
-                string path = "../../Files/" + @prof.AvatarPath;
-                <div class="row">
-                    <div class="col-md-3">
-                        <img src="@path" class="img-responsive" />
-                    </div>
-                    <div class="col-md-8">
-                        <label class="control-label">@prof.UserLogin.nic</label>
-                        <br />
-                        <label class="control-label">@prof.dateOfBirthday</label>
-                        <br />
-                        <label class="control-label">@prof.sity</label>
-                    </div>
-                    
-                </div>
-            }
+            <table class="table table-hover">
+                @foreach (var prof in Model.Profiles)
+                {
+                    string path = "~/Files/" + @prof.AvatarPath;
+                    string absolutePath = Server.MapPath(path);
+                    if (!File.Exists(absolutePath) && (@prof.sex))
+                        path = "../../Files/avatars/einman.jpg";
+                    else if (!File.Exists(absolutePath) && (!@prof.sex))
+                        path = "../../Files/avatars/einefrau.jpg";
+                    else
+                        path = "../../Files/" + @prof.AvatarPath;
+                
+                    <tr>
+                        <td>
+                            <img src="@path" class="img-responsive" style="width: 64px; height: 64px;" />
+                        </td>
+                        <td>
+                            @Html.ActionLink(@prof.UserLogin.nic, "Details", "Profile", new { id = @prof.id }, null), @prof.sity
+                            <br />
+                            <label class="control-label">@Html.DisplayFor(p => prof.dateOfBirthday)</label>
+                        </td>
+                    </tr>
             
-        }
+                }
+            </table>
+            
+            }
 
         }
 

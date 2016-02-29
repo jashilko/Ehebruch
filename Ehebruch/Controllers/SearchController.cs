@@ -49,6 +49,7 @@ namespace Ehebruch.Controllers
                         ).ToList();
 
                 request.Profiles = result;
+                request.wish = wishes;
             }
             return View(request);
         }
