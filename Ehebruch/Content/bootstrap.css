@@ -19,7 +19,7 @@ footer,
 header,
 hgroup,
 main,
-nav,
+nav,back
 section,
 summary {
   display: block;
@@ -268,7 +268,7 @@ table {
   }
   .table td,
   .table th {
-    background-color: #fff !important;
+    background-color: #eee !important;
   }
   .btn > .caret,
   .dropup > .btn > .caret {

@@ -14,24 +14,167 @@ namespace Ehebruch.Controllers
     public class ProfileController : Controller
     {
         private EhebruchContex db = new EhebruchContex();
+        private SelectList FSelectCountry;
+        private SelectList FSelectRegion;
+        private SelectList FSelectCity;
+        private SelectList FFigure;
+        private SelectList FSmoking;
+        private SelectList FAlcohol;
+        private SelectList FWhatpart;
 
-        //
+        // Получаем список стран. 
+        private SelectList getSelectCountryList(int selectedIndex = 3159)
+        {
+            if (FSelectCountry == null)
+                FSelectCountry = new SelectList(db.Countries, "Id", "name", db.Countries.Where(c => c.Id == selectedIndex));
+            return FSelectCountry;
+        }
+
+        private SelectList getSelectRegionList(int CountryId = 0, int selectedReg = 0)
+        {
+            if (FSelectRegion == null)
+                FSelectRegion = new SelectList(db.Regions.Where(r => r.CountryId == CountryId).OrderBy(c => c.Name),
+                    "Id", "name", db.Regions.Where(r => r.Id == selectedReg));
+            return FSelectRegion;
+        }
+
+        private SelectList getSelectCityList(int RegionId = 0, int selectedCity = 0)
+        {
+            if (FSelectCity == null)
+                FSelectCity = new SelectList(db.Cities.Where(s => (s.RegionId == RegionId)),
+                "Id", "name", db.Cities.Where(c => c.Id == selectedCity));
+            return FSelectCity;
+        }
+
+        private SelectList getSelectFigureList(int? Fig = 0)
+        {
+            if (FFigure == null)
+            {
+                if (Fig == null) Fig = 0;
+                var figList = db.Figures;
+                figList.Add(new Figure { Id = 0, Fig = "Выберите фигуру" });
+                FFigure = new SelectList(figList, "Id", "Fig", figList.Where(f => f.Id == Fig));
+            }
+            return FFigure;
+        }
+
+        private SelectList getSmokingList(int? Smo = 0)
+        {
+            if (FSmoking == null)
+            {
+                if (Smo == null) Smo = 0;
+                var smoList = db.Smokings;
+                smoList.Add(new Smoking { Id = 0, Smoke = "Курение" });
+                FSmoking = new SelectList(smoList, "Id", "Smoke", smoList.Where(s => s.Id == Smo).FirstOrDefault());
+            }
+            
+            return FSmoking;
+        }
+
+        private SelectList getAlcoholList(int? Alc)
+        {
+            if (FAlcohol == null)
+            {
+                if (Alc == null) Alc = 0;
+                var alcoList = db.Alcohols;
+                alcoList.Add(new Alcohol { Id = 0, Alco = "Алкоголь" });
+                FAlcohol = new SelectList(alcoList, "Id", "Alco", alcoList.Where(a => a.Id == Alc).FirstOrDefault());
+            }
+            return FAlcohol;
+        }
+
+        // Возвращаем Чп со списком регионов.
+        public ActionResult GetRegion(int id)
+        {
+            var reglist = db.Regions.Where(c => c.CountryId == id);
+            return PartialView(reglist.ToList());
+        }
+
+        // Возвращаем Чп со списком городов.
+        public ActionResult GetCity(int id)
+        {
+            return PartialView(db.Cities.Where(c => c.RegionId == id).ToList());
+        }
+
+        // Список языков.
+        public List<KeyValuePair<string, int>> getLangList()
+        {
+            List<KeyValuePair<string, int>> res = new List<KeyValuePair<string, int>>();
+            foreach (Language l in db.Languages)
+            {
+               res.Add(new KeyValuePair<string, int>(l.Lang, l.Id));
+            }
+            return res;
+        }
+
+        // Список, что привлекает.
+        public List<KeyValuePair<string, int>> getExcitementList()
+        {
+            List<KeyValuePair<string, int>> res = new List<KeyValuePair<string, int>>();
+            foreach (Excitement e in db.Excitements)
+            {
+                res.Add(new KeyValuePair<string, int>(e.Excit, e.Id));
+            }
+            return res;
+        }
+
+        // Что в партнере
+        public List<KeyValuePair<string, int>> getWhatpartnerList(Boolean man)
+        {
+            List<KeyValuePair<string, int>> res = new List<KeyValuePair<string, int>>();
+            foreach (Whatpartner w in db.Whatpartners.Where(w => ((w.Smb == null)|| (w.Smb == man))))
+            {
+                res.Add(new KeyValuePair<string, int>(w.Whatpart, w.Id));
+            }
+            return res;
+        }
+
         
         // GET: /Profile
         [Authorize]
         public ActionResult Index()
         {
+            db.UserProfiles.Load();
             UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
-            UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginID == user.id).FirstOrDefault();
-            var fotos = db.UserFotoes.Where(f => f.UserProfileid == userprofile.id) //Получаем фото текущего профиля. 
+//            UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Include(p => p.Country).Include(p => p.City).Include(p => p.Region).
+            UserProfile userprofile = db.UserProfiles.Where(p => p.UserLoginId == user.Id).FirstOrDefault();
+            if (userprofile == null)
+                return Redirect("/Profile/Create");
+            var fotos = db.UserFotoes.Where(f => f.UserProfileId == userprofile.Id) //Получаем фото текущего профиля. 
                             .OrderByDescending(f => f.UploadDate); // упорядочиваем по дате по убыванию            
-            userprofile.Fotoes = fotos;
-            //ViewBag.Foto = fotos;
+            if (fotos != null && fotos.Count() > 0)
+                userprofile.Fotoes = fotos;
+
+            db.UserProfiles.Load();
+
+            var list = new List<KeyValuePair<string, short>>(){
+            new KeyValuePair<string, short>("Флирт и переписка", 1),
+            new KeyValuePair<string, short>("Встречи и свидания", 2),
+            new KeyValuePair<string, short>("Быстрый секс", 4),
+            new KeyValuePair<string, short>("Длительные отношения", 8),
+            };
+
+            ViewBag.wishe = list;
+            ViewBag.Country = getSelectCountryList((userprofile.CountryId != null) ? (int)userprofile.CountryId : 0);
+            ViewBag.Region = getSelectRegionList((userprofile.CountryId != null) ? (int)userprofile.CountryId : 0,
+                (userprofile.RegionId != null) ? (int)userprofile.RegionId : 0);
+            ViewBag.City = getSelectCityList((userprofile.RegionId != null) ? (int)userprofile.RegionId : 0,
+                (userprofile.CityId != null) ? (int)userprofile.CityId : 0);
+
+
+
+            ViewBag.Figure = getSelectFigureList((userprofile.FigureId != null) ? (int)userprofile.FigureId : 0);
+            ViewBag.Smoking = getSmokingList(userprofile.SmokingId);
+            ViewBag.Alcohol = getAlcoholList(userprofile.AlcoholId);
+            ViewBag.LangList = getLangList();
+            ViewBag.ExcitList = getExcitementList();
+            ViewBag.Whatpart = getWhatpartnerList(userprofile.sex);
+
+
             if (userprofile == null)
             {
                 return HttpNotFound();
             }
-            
             return View(userprofile);
         }
 
@@ -40,21 +183,22 @@ namespace Ehebruch.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            UserProfile userprofile = db.UserProfiles.Find(id);
-            userprofile.UserLogin = db.UserLogins.Find(userprofile.UserLoginID);
+            UserProfile userprofile = db.UserProfiles.Include(p => p.Country).Include(p => p.City).
+                Include(p => p.Region).Where(p => p.Id == id).FirstOrDefault();
+            userprofile.UserLogin = db.UserLogins.Find(userprofile.UserLoginId);
             if (userprofile == null)
             {
                 return HttpNotFound();
             }
-            var fotos = db.UserFotoes.Where(f => f.UserProfileid == userprofile.id) //Получаем фото текущего профиля. 
+            var fotos = db.UserFotoes.Where(f => f.UserProfileId == userprofile.Id) //Получаем фото текущего профиля. 
                                         .OrderByDescending(f => f.UploadDate); // упорядочиваем по дате по убыванию            
             userprofile.Fotoes = fotos;
             return View("Index", userprofile);
         }
 
+
         //
         // GET: /Profile/Create
-
         [Authorize]
         public ActionResult Create()
         {
@@ -67,8 +211,19 @@ namespace Ehebruch.Controllers
 
             ViewBag.wishe = list;
             
-
-            // зхаполняем список 
+            
+            // Города и Страны
+            ViewBag.Country = getSelectCountryList();
+            ViewBag.Region = getSelectRegionList();
+            ViewBag.City = getSelectCityList();
+            /*
+            SelectList selectRegion = new SelectList(db.Regions.Where(r => r.CountryId == selectedIndex), "Id", "name", selectedIndex);
+            
+            SelectList selectCity = new SelectList(db.Cities.Where(s => (s.CountryId == selectedIndex && s.RegionId == selectedIndex)),
+                "Id", "name", selectedIndex);
+            
+            */
+            // заполняем список 
             List<int> height = new List<int>();
             for (int i = 150; i <= 250; i++ )
             {
@@ -79,12 +234,8 @@ namespace Ehebruch.Controllers
                 return View();
         }
 
-
-
         //
         // POST: /Profile/Create
-
-        
 
         [HttpPost]
         [Authorize]
@@ -103,7 +254,7 @@ namespace Ehebruch.Controllers
                             wish += i;
                         }
 
-                        request.UserLoginID = user.id;
+                        request.UserLoginId = user.Id;
                         request.LastUpdateDate = DateTime.Now;
                         request.wish = wish;
                         
@@ -151,7 +302,9 @@ namespace Ehebruch.Controllers
 
         public ActionResult Edit(int id = 0)
         {
+            db.UserProfiles.Load();
             UserProfile userprofile = db.UserProfiles.Find(id);
+
 
             var list = new List<KeyValuePair<string, short>>(){
             new KeyValuePair<string, short>("Флирт и переписка", 1),
@@ -161,6 +314,21 @@ namespace Ehebruch.Controllers
             };
 
             ViewBag.wishe = list;
+            ViewBag.Country = getSelectCountryList((userprofile.CountryId != null) ? (int)userprofile.CountryId : 0);
+            ViewBag.Region = getSelectRegionList((userprofile.CountryId != null) ? (int)userprofile.CountryId : 0, 
+                (userprofile.RegionId != null) ? (int)userprofile.RegionId : 0);
+            ViewBag.City = getSelectCityList((userprofile.RegionId != null) ? (int)userprofile.RegionId : 0, 
+                (userprofile.CityId != null) ? (int)userprofile.CityId : 0);
+
+
+
+            ViewBag.Figure = getSelectFigureList((userprofile.FigureId != null) ? (int)userprofile.FigureId : 0);
+            ViewBag.Smoking = getSmokingList(userprofile.SmokingId);
+            ViewBag.Alcohol = getAlcoholList(userprofile.AlcoholId);
+            ViewBag.LangList = getLangList();
+            ViewBag.ExcitList = getExcitementList();
+            ViewBag.Whatpart = getWhatpartnerList(userprofile.sex);
+            
 
             if (userprofile == null)
             {
@@ -173,34 +341,74 @@ namespace Ehebruch.Controllers
         // POST: /Profile/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(UserProfile request, HttpPostedFileBase error, short[] selectedwishes)
+        public ActionResult Edit(int Id, FormCollection formcollection,  UserProfile request, HttpPostedFileBase error, short[] selectedwishes, int[] selectedlang,
+            int[] selectedexcit, int[] selectedwhatpart)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(request).State = EntityState.Modified;
                 if (request != null)
                 {
+                    db.UserProfiles.Load();
                     UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
-                    short wish = 0;
-                    foreach (short i in selectedwishes)
+                    UserProfile userprofile = db.UserProfiles.Find(Id);
+                    
+                    if (TryUpdateModel(userprofile))
                     {
-                        wish += i;
-                    }
-                    request.LastUpdateDate = DateTime.Now;
-                    request.wish = wish;
-                    request.UserLoginID = user.id;
+                        short wish = 0;
+                        foreach (short i in selectedwishes)
+                        {
+                            wish += i;
+                        }
 
-                    if (error != null)
-                    {
-                        DateTime current = DateTime.Now;
-                        // Получаем расширение
-                        string ext = error.FileName.Substring(error.FileName.LastIndexOf('.'));
-                        // сохраняем файл по определенному пути на сервере
-                        string path = current.ToString("dd/MM/yyyy H:mm:ss").Replace(":", "_").Replace("/", ".") + ext;
-                        error.SaveAs(Server.MapPath("~/Files/" + path));
-                        request.AvatarPath = path;
+                        userprofile.LastUpdateDate = DateTime.Now;
+                        userprofile.wish = wish;
+                        userprofile.UserLoginId = user.Id;
+                        userprofile.dateOfBirthday = null;
+
+                        if (error != null)
+                        {
+                            DateTime current = DateTime.Now;
+                            // Получаем расширение
+                            string ext = error.FileName.Substring(error.FileName.LastIndexOf('.'));
+                            // сохраняем файл по определенному пути на сервере
+                            string path = current.ToString("dd/MM/yyyy H:mm:ss").Replace(":", "_").Replace("/", ".") + ext;
+                            error.SaveAs(Server.MapPath("~/Files/" + path));
+                            userprofile.AvatarPath = path;
+                        }
+
+
+
+                        foreach (Language l in db.Languages)
+                        {
+                            if ((selectedlang != null) && (userprofile.Languages.Contains(l)) && (!selectedlang.Contains(l.Id)))
+                                userprofile.Languages.Remove(l);
+                            else if ((selectedlang != null) && (!userprofile.Languages.Contains(l)) && (selectedlang.Contains(l.Id)))
+                                userprofile.Languages.Add(l);
+
+                        }
+
+                        foreach (Excitement e in db.Excitements)
+                        {
+                            if ((selectedexcit != null) && (userprofile.Excitements.Contains(e)) && (!selectedexcit.Contains(e.Id)))
+                                userprofile.Excitements.Remove(e);
+                            else if ((selectedexcit != null) && (!userprofile.Excitements.Contains(e)) && (selectedexcit.Contains(e.Id)))
+                                userprofile.Excitements.Add(e);
+                        }
+
+                        foreach (Whatpartner e in db.Whatpartners)
+                        {
+                            if ((selectedwhatpart != null) && (userprofile.Whatpartners.Contains(e)) && (!selectedwhatpart.Contains(e.Id)))
+                                userprofile.Whatpartners.Remove(e);
+                            else if ((selectedwhatpart != null) && (!userprofile.Whatpartners.Contains(e)) && (selectedwhatpart.Contains(e.Id)))
+                                userprofile.Whatpartners.Add(e);
+                        }
+
+
                     }
+                    db.Entry(userprofile).State = EntityState.Modified;    
                     db.SaveChanges();
+
+
                     return RedirectToAction("Index");
                 }
             }
@@ -254,8 +462,8 @@ namespace Ehebruch.Controllers
         public ActionResult FotoShow()
         {
             UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
-            UserProfile userprofile = db.UserProfiles.Where(p => p.UserLoginID == user.id).FirstOrDefault();
-            var fotos = db.UserFotoes.Where(f => f.UserProfileid == userprofile.id) //Получаем фото текущего профиля. 
+            UserProfile userprofile = db.UserProfiles.Where(p => p.UserLoginId == user.Id).FirstOrDefault();
+            var fotos = db.UserFotoes.Where(f => f.UserProfileId == userprofile.Id) //Получаем фото текущего профиля. 
                             .OrderByDescending(f => f.UploadDate); // упорядочиваем по дате по убыванию
             return PartialView("FotoShow", fotos.ToList());
         }
@@ -270,8 +478,8 @@ namespace Ehebruch.Controllers
                 db.UserFotoes.Remove(foto);
                 db.SaveChanges();
             }
-            UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginID == user.id).FirstOrDefault();
-            var fotos = db.UserFotoes.Where(f => f.UserProfileid == userprofile.id) //Получаем фото текущего профиля. 
+            UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginId == user.Id).FirstOrDefault();
+            var fotos = db.UserFotoes.Where(f => f.UserProfileId == userprofile.Id) //Получаем фото текущего профиля. 
                             .OrderByDescending(f => f.UploadDate); // упорядочиваем по дате по убыванию            
             userprofile.Fotoes = fotos;
             return View("Index", userprofile);
@@ -301,8 +509,8 @@ namespace Ehebruch.Controllers
         public ActionResult AddFoto()
         {
             UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
-            UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginID == user.id).FirstOrDefault();
-            var fotos = db.UserFotoes.Where(f => f.UserProfileid == userprofile.id) //Получаем фото текущего профиля. 
+            UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginId == user.Id).FirstOrDefault();
+            var fotos = db.UserFotoes.Where(f => f.UserProfileId == userprofile.Id) //Получаем фото текущего профиля. 
                             .OrderByDescending(f => f.UploadDate); // упорядочиваем по дате по убыванию            
             userprofile.Fotoes = fotos;
             //ViewBag.Foto = fotos;
@@ -310,7 +518,7 @@ namespace Ehebruch.Controllers
             {
                 return HttpNotFound();
             }
-            return View(userprofile);
+            return PartialView(userprofile);
         }
 
 
@@ -318,7 +526,7 @@ namespace Ehebruch.Controllers
         public ActionResult AddFoto(HttpPostedFileBase error, String descript)
         {
             UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
-            UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginID == user.id).FirstOrDefault();
+            UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginId == user.Id).FirstOrDefault();
             if (error != null)
             {
                 UserFoto userfoto = new UserFoto();
@@ -332,12 +540,12 @@ namespace Ehebruch.Controllers
                 userfoto.Path = path;
                 userfoto.UploadDate = current;
                 userfoto.Descript = descript;
-                userfoto.UserProfileid = userprofile.id;
+                userfoto.UserProfileId = userprofile.Id;
                 db.UserFotoes.Add(userfoto);
                 db.SaveChanges();
             }
 
-            var fotos = db.UserFotoes.Where(f => f.UserProfileid == userprofile.id) //Получаем фото текущего профиля. 
+            var fotos = db.UserFotoes.Where(f => f.UserProfileId == userprofile.Id) //Получаем фото текущего профиля. 
                             .OrderByDescending(f => f.UploadDate); // упорядочиваем по дате по убыванию            
             userprofile.Fotoes = fotos;
              
@@ -345,7 +553,7 @@ namespace Ehebruch.Controllers
             {
                 return HttpNotFound();
             }
-            return View(userprofile);
+            return PartialView(userprofile);
         }
 
 

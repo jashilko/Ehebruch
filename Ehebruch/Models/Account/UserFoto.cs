@@ -11,7 +11,7 @@ namespace Ehebruch.Models.Account
         // ИД 
         [Required]
         [ScaffoldColumn(false)]
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [Display(Name = "Путь к файлу")]
@@ -25,7 +25,7 @@ namespace Ehebruch.Models.Account
 
         [Required]
         [ScaffoldColumn(false)]
-        public int UserProfileid { get; set; }
+        public int UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
     
     }

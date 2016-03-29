@@ -12,21 +12,21 @@
             <hr />
             @Html.ValidationSummary()
             <div class="form-group">
-                @Html.LabelFor(m => m.country, new { @class = "col-md-2 control-label" })
+                @Html.LabelFor(m => m.CountryId, new { @class = "col-md-2 control-label" })
                 <div class="col-md-7">
-                    @Html.TextBoxFor(m => m.country, new { @class = "form-control" })
+                    @Html.DropDownList("Country", ViewBag.Country as SelectList, new {id="country", @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.region, new { @class = "col-md-2 control-label" })
+                @Html.LabelFor(m => m.RegionId, new { @class = "col-md-2 control-label" })
                 <div class="col-md-7">
-                    @Html.TextBoxFor(m => m.region, new { @class = "form-control" })
+                    @Html.DropDownList("Region", ViewBag.Region as SelectList, new { id = "region" , @class = "form-control"})
                 </div>
             </div>       
             <div class="form-group">
-                @Html.LabelFor(m => m.sity, new { @class = "col-md-2 control-label" })
+                @Html.LabelFor(m => m.CityId, new { @class = "col-md-2 control-label" })
                 <div class="col-md-7">
-                    @Html.TextBoxFor(m => m.sity, new { @class = "form-control" })
+                    @Html.DropDownList("Sity", ViewBag.City as SelectList, new { id = "sity" , @class = "form-control"})
                 </div>
             </div>       
    
@@ -103,3 +103,32 @@
 
     </div>
 </div>
+
+@section Scripts{
+<script type="text/javascript">
+    $(function () {
+
+        $('#country').change(function ()
+        {
+            // получаем выбранный id
+            var id = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetRegion")/' + id,
+                success: function (data) {
+                     
+                    // заменяем содержимое присланным частичным представлением
+                    $('#region').replaceWith(data);
+                }
+            });
+        });
+
+        
+    })
+</script>
+}
+
+
+
+
+

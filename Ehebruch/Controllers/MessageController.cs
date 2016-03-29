@@ -29,11 +29,11 @@ namespace Ehebruch.Controllers
             // ищем пользователя. 
             UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
             // Ищем его профиль. 
-            UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginID == user.id).FirstOrDefault();
+            UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginId == user.Id).FirstOrDefault();
             // С кем ведем беседу. 
-            UserProfile userwith = db.UserProfiles.Include(u => u.UserLogin).Where(u => u.id == id).FirstOrDefault();
+            UserProfile userwith = db.UserProfiles.Include(u => u.UserLogin).Where(u => u.Id == id).FirstOrDefault();
             // Выбираем список сообщений. 
-            var dl = db.Messages.Where(m => (m.RecipientId == userwith.id && m.SenderId == userprofile.id) || (m.RecipientId == userprofile.id || m.SenderId == userwith.id)).OrderBy(m => m.CreatedTime)
+            var dl = db.Messages.Where(m => (m.RecipientId == userwith.Id && m.SenderId == userprofile.Id) || (m.RecipientId == userprofile.Id || m.SenderId == userwith.Id)).OrderBy(m => m.CreatedTime)
                 .Select(m => new {id = m.id, TextMessage = m.TextMessage, CreatedTime = m.CreatedTime, RecipientId = m.RecipientId, SenderId = m.SenderId});
 
             List<Message> MList = new List<Message>();
@@ -65,7 +65,7 @@ namespace Ehebruch.Controllers
             ViewBag.Mes = Mes;
             */
             UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
-            UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginID == user.id).FirstOrDefault();
+            UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginId == user.Id).FirstOrDefault();
             ViewBag.Rec = userprofile;
             return View("Index");
         }
@@ -74,16 +74,16 @@ namespace Ehebruch.Controllers
         public ActionResult Im(int id = 0)
         {
             UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
-            UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginID == user.id).FirstOrDefault();
+            UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginId == user.Id).FirstOrDefault();
             //UserProfile Recuser = db.UserProfiles.Find(id);
             List<Message> MesList = new List<Message>();
             List<Dialog> DList = new List<Dialog>();
 
             if (id == 0)
             {
-                DateTime MaxMes = db.Messages.Where(m => (m.SenderId == userprofile.id)).Max(m => m.CreatedTime);
+                DateTime MaxMes = db.Messages.Where(m => (m.SenderId == userprofile.Id)).Max(m => m.CreatedTime);
                 // Выбираем всех, с кем общался. 
-                var bb = db.Messages.Where(m => m.SenderId == userprofile.id).GroupBy(m => m.RecipientId);
+                var bb = db.Messages.Where(m => m.SenderId == userprofile.Id).GroupBy(m => m.RecipientId);
 
                 foreach (var c in bb)
                 {
@@ -92,13 +92,13 @@ namespace Ehebruch.Controllers
                     MaxMes = c.Max(m => m.CreatedTime);
 
                     // Выбираем последнее сообщение. 
-                    var ddd = c.Where(m => (m.SenderId == userprofile.id && m.RecipientId == c.Key && m.CreatedTime == MaxMes)).
+                    var ddd = c.Where(m => (m.SenderId == userprofile.Id && m.RecipientId == c.Key && m.CreatedTime == MaxMes)).
                         Select(m => new Dialog { IdPerson = m.RecipientId, TextMessage = m.TextMessage });
 
                     foreach (Dialog m in ddd)
                     {
                         m.AvatarPath = db.UserProfiles.Find(m.IdPerson).AvatarPath;
-                        m.nic = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.id == m.IdPerson).Select(p => p.UserLogin.nic).FirstOrDefault();
+                        m.nic = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.Id == m.IdPerson).Select(p => p.UserLogin.nic).FirstOrDefault();
                         DList.Add(m);
                     }
                 }

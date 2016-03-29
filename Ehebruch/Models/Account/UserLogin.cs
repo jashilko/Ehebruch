@@ -14,7 +14,7 @@ namespace Ehebruch.Models
         // ИД 
         [Required]
         [ScaffoldColumn(false)]
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage="Ник должен быть задан")]
         [StringLength (50, MinimumLength=3,ErrorMessage="Длина строки должна быть от 3 до 30 символов")]

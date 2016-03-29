@@ -1,86 +1,211 @@
 ﻿@model Ehebruch.Models.Account.UserProfile
-
+ 
 @{
     Layout = "~/Views/Shared/_LayoutBoot3.cshtml";
 }
 
 <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <div class="row">
-            <h3>Анкета пользователя @Model.UserLogin.nic</h3>
-        </div>
-        <ul id="myTab" class="nav nav-tabs">
-            <li class="active"><a href="#profile" data-toggle="tab">Информация</a></li>
-            <li><a href="#foto" data-toggle="tab">Фотографии</a></li>
-        </ul>
-        <div id="myTabContent" class="tab-content">
-            <div class="tab-pane fade in active" id="profile">
-                <br />
-                <div class="col-md-4">
+    <div class="col-md-12">
+        @using (Html.BeginForm("Edit", "Profile", FormMethod.Get, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+        {
+            <h4>Ваш профиль, @Model.UserLogin.nic</h4>
+            <hr />
+            @Html.ValidationSummary()
+
+            <div class="form-group">
+                <div class="col-md-3">
                     @{
-                        string path = "../../Files/" + Model.AvatarPath; 
-                        <img src="@path" title="Это я" class="img-responsive" />
-                    }
-                    <br />
-                    написать сообщение
-                    <br />
-
-                    <a class="btn btn-default" href="Profile/Edit/@Model.id" role="button">Редактировать</a>
-                </div>
-                    <div class ="col-md-8">
-                    <p>
-                        <div class="row">
-                            <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.dateOfBirthday)</label>
-                            <div class="col-md-6">@Html.DisplayFor(model => model.dateOfBirthday)</div>
-                        </div>
-                    </p>
-
-                    <p>
-                        <div class="row">
-                            <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.country)</label>
-                            <div class="col-md-6">@Html.DisplayFor(model => model.country)</div>
-                        </div>
-                    </p>
-
-                    <p>
-                        <div class="row">
-                            <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.region)</label>
-                            <div class="col-md-6">@Html.DisplayFor(model => model.region)</div>
-                        </div>
-                    </p>
-                    <div class="row">
-                        <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.sity)</label>
-                        <div class="col-md-6">@Html.DisplayFor(model => model.sity)</div>
-                    </div>
-                    <div class="row">
-                        <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.wish)</label>
-                        <div class="col-md-6">@Html.DisplayFor(model => model.wish)</div>
-                    </div>
-
-                    <div class="row">
-                        <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.height)</label>
-                        <div class="col-md-6">@Html.DisplayFor(model => model.height)</div>
-                    </div>
-                    <div class="row">
-                        <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.weight)</label>
-                        <div class="col-md-6">@Html.DisplayFor(model => model.weight)</div>
-                    </div>
-                    <div class="row">
-                        <label class="col-md-6 control-label">@Html.DisplayNameFor(model => model.sex)</label>
-                        @if (Model.sex == true)
-                        {<div class="col-md-6">Мужчина</div>}
+                        string path = "~/Files/" + Model.AvatarPath;
+                        string absolutePath = Server.MapPath(path);
+                        if (!File.Exists(absolutePath) && (Model.sex))
+                        {
+                            path = "../../Files/avatars/einman.jpg";
+                        }
+                        else if (!File.Exists(absolutePath) && (!Model.sex))
+                        {
+                            path = "../../Files/avatars/einefrau.jpg";
+                        }
                         else
-                        {<div class="col-md-6">Женщина</div>}
-                    </div>
+                        {
+                            path = "../../Files/" + Model.AvatarPath;                        
+                        }
+                        <img src="@path" class="img-responsive" />
+                    }
+                </div>
+                <div class="col-md-9">
+                    @Html.LabelFor(m => m.About, new { @class = "control-label" })
+                    @Html.TextAreaFor(m => m.About, new {@class = "form-control", @readonly = true }) 
+                    <br>
+                    @Html.LabelFor(m => m.MyIdeal, new { @class = "control-label" })
+                    @Html.TextAreaFor(m => m.MyIdeal, new {@class = "form-control", @readonly = true }) 
+                </div>
+            </div>
+            
+            
+            <div class="form-group">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.CountryId, new { @class = "col-md-2 control-label" })
+                    @Html.DropDownListFor(m => m.CountryId, ViewBag.Country as SelectList, new { id = "country", @class = "col-md-2 form-control", @disabled = "disabled"})
+                </div>  
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.RegionId, new { @class = "col-md-2 control-label" })
+                    @Html.DropDownListFor(m => m.RegionId, ViewBag.Region as SelectList, new { id = "region", @class = "form-control", @disabled = "disabled" })
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.CityId, new { @class = "col-md-2 control-label" })
+                    @Html.DropDownListFor(m => m.CityId, ViewBag.City as SelectList, new { id = "sity", @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+   
+            
+            <div class="form-group">
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.sex, new { @class = "col-md-2 control-label" })
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.sex, new[]   { new SelectListItem() { Text = "Мужской", Value = "true" }, 
+                        new SelectListItem() { Text = "Женский", Value = "false" }}, new { @class = "form-control", @disabled = "disabled" })  
+                    </div>                   
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.height, new { @class = "col-md-2 control-label" })
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.height,
+                        new SelectList(
+                            Enumerable.Range(150, 250).Select(x => new { Value = x, Text = x }),
+                            "Value",
+                            "Text"),
+                        new { @class = "form-control", @disabled = "disabled"})  
+                    </div>                          
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.weight, new { @class = "col-md-1 control-label" })
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.weight,
+                        new SelectList(
+                            Enumerable.Range(50, 150).Select(x => new { Value = x, Text = x }),
+                            "Value",
+                            "Text"),
+                        new { @class = "form-control", @disabled = "disabled" })  
+                    </div>                          
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.Age, new { @class = "col-md-1 control-label" })
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.Age,
+                        new SelectList(
+                            Enumerable.Range(18, 100).Select(x => new { Value = x, Text = x }),
+                            "Value",
+                            "Text"),
+                        new { @class = "form-control", @disabled = "disabled" })  
+                    </div>                          
+                </div>
+            </div>  
 
+            <div class="form-group">
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.FigureId, new { @class = "col-md-2 control-label" })
+                    @Html.DropDownList("FigureId", ViewBag.Figure as SelectList, "Выберите", new { id = "FigureId", @class = "form-control", @disabled = "disabled" })
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.AlcoholId, new { @class = "col-md-2 control-label" })
+                    @Html.DropDownList("AlcoholId", ViewBag.Alcohol as SelectList, "Выберите", new { id = "AlcoholId", @class = "form-control", @disabled = "disabled" })
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.SmokingId, new { @class = "col-md-2 control-label" })
+                    @Html.DropDownList("SmokingId", ViewBag.Smoking as SelectList, "Выберите", new { id = "SmokingId", @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>            
+            
+            <div class="form-group">
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.wish, new { @class = "col-md-2 control-label" })
+                    <br>
+                    <div class="checkbox">
+                         @foreach (KeyValuePair<string, short> c in ViewBag.wishe)
+                         {
+                                    <input type="checkbox" disabled name="selectedwishes" value="@c.Value" @(c.Value == (Model.wish & c.Value) ? "checked=\"checked\"" : "")/>@c.Key <br />
+                         }                    
+                    </div>
                 </div>
 
-            </div>
-            <div class="tab-pane fade" id="foto">
-                @Html.Partial("FotoShow")
-            </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.Languages, new { @class = "col-md-2 control-label" })
+                    <br>
+                    <div class="checkbox">
+                         @foreach (KeyValuePair<string, int> c in ViewBag.LangList)
+                         {
+                                    <input type="checkbox" disabled name="selectedlang" value="@c.Value" @(Model.Languages.Where(d => d.Id == c.Value).FirstOrDefault() != null ? "checked=\"checked\"" : "") />@c.Key <br />
+                         }                    
+                    </div>
+                </div>
 
-        </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.Excitements, new { @class = "control-label" })
+                    <br>
+                    <div class="checkbox">
+                         @foreach (KeyValuePair<string, int> c in ViewBag.ExcitList)
+                         {
+                                    <input type="checkbox" disabled name="selectedexcit" value="@c.Value" @(Model.Excitements.Where(d => d.Id == c.Value).FirstOrDefault() != null ? "checked=\"checked\"" : "")/>@c.Key <br />
+                         }                    
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.Whatpartners, new { @class = "control-label" })
+                    <br>
+                    <div class="checkbox">
+                         @foreach (KeyValuePair<string, int> c in ViewBag.Whatpart)
+                         {
+                                    <input type="checkbox" disabled name="selectedwhatpart" value="@c.Value" @(Model.Whatpartners.Where(d => d.Id == c.Value).FirstOrDefault() != null ? "checked=\"checked\"" : "")/>@c.Key <br />
+                         }                    
+                    </div>
+                </div>
+
+                
+                
+            </div>  
+            
+        }
+
+
+    </div>
+    <div class="col-md-12">
+        @using (Html.BeginForm("Edit", "Profile", FormMethod.Get, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+        {
+            <h4>Ваши фото, @Model.UserLogin.nic</h4>
+            <div class="col-md-12 text-center"> 
+                <a class="btn btn-default center-block" href="Profile/AddFoto" role="button">Добавить фото</a>
+                </div>
+                <br />
+
+            if (Model.Fotoes != null && Model.Fotoes.Count() > 0)
+            {
+                <p>Всего фотографий: @(Model.Fotoes.Count<Ehebruch.Models.Account.UserFoto>())</p>
+
+                foreach (Ehebruch.Models.Account.UserFoto item in Model.Fotoes)
+                {
+                    string path = "../../Files/" + @item.Path;
+                    <div id="results">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="@path" class="img-responsive" /></div>
+                            <br />
+                            <label class="col-md-4 control-label ">@item.Descript</label>
+
+                            <div class="col-md-4">
+                                @using (Ajax.BeginForm("DeleteFoto", new object { }, new AjaxOptions { UpdateTargetId = "results" }, new {role = "form"}))
+                                {
+                                    @Html.Hidden("fotoid", item.Id)
+                                    <input type="submit" value="Удалить" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <br />    
+                }
+            }            
+                             
+        }        
     </div>
 </div>
 

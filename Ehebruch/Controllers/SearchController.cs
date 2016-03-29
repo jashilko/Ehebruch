@@ -38,12 +38,12 @@ namespace Ehebruch.Controllers
             if (!string.IsNullOrEmpty(request.SearchButton)) 
             {
                 var result = db.UserProfiles.
-                    Include(p => p.UserLogin).
+                    Include(p => p.UserLogin).Include(p => p.City).
                     Where(p => (p.height >= request.heightFrom || request.heightFrom == null) && // Рост от
                         (p.height <= request.heightTo || request.heightTo == null) && // Рост до 
                         (p.weight >= request.weightFrom || request.weightFrom == null) && // Вес от
                         (p.weight <= request.weightTo || request.weightTo == null) && // Вес до
-                        (p.sity == request.Sity || String.IsNullOrEmpty(request.Sity)) && // Город
+                        //(p.sity == request.Sity || String.IsNullOrEmpty(request.Sity)) && // Город
                         (p.sex == request.SearchSex) && // Ищем пол
                         (p.wish == (p.wish & wishes))
                         ).ToList();

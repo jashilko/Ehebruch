@@ -134,6 +134,7 @@
     <Compile Include="Models\Account\LogViewModel.cs" />
     <Compile Include="Models\Account\RegisterUser.cs" />
     <Compile Include="Models\Account\UserFoto.cs" />
+    <Compile Include="Models\Cities.cs" />
     <Compile Include="Models\EhebruchContex.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\References.cs" />
@@ -142,12 +143,16 @@
     <Compile Include="Models\Account\UserProfile.cs" />
     <Compile Include="Models\SearchProfiles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\EheMembershipProvider.cs" />
-    <Compile Include="Providers\EheProfileProvider.cs" />
-    <Compile Include="Providers\EheProvider.cs" />
+    <Compile Include="Scripts\Providers\EheMembershipProvider.cs" />
+    <Compile Include="Scripts\Providers\EheProfileProvider.cs" />
+    <Compile Include="Scripts\Providers\EheProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Ehe.mdf" />
+    <Content Include="App_Data\EHEB.mdf" />
+    <Content Include="App_Data\EHEB_log.ldf">
+      <DependentUpon>EHEB.mdf</DependentUpon>
+    </Content>
     <Content Include="App_Data\Ehe_log.ldf">
       <DependentUpon>Ehe.mdf</DependentUpon>
     </Content>
@@ -269,6 +274,8 @@
     <Content Include="Views\Profile\AddFoto.cshtml" />
     <Content Include="Views\Message\Index.cshtml" />
     <Content Include="Views\Message\Im.cshtml" />
+    <Content Include="Views\Profile\GetRegion.cshtml" />
+    <Content Include="Views\Profile\GetCity.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Files\" />
