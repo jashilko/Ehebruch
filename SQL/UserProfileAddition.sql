@@ -103,6 +103,31 @@ CREATE TABLE [dbo].[Whatpartners] (
     [Smb] BIT NULL, 
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Мусколистое/подтянутое тело', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Татуировки', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Женщина в теле', 0)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Высокий рост', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Невысокий рост', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Миниатюрная фигура', 0)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Длинные волосы', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Девушка-соседка', 1)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Плохая девочка', 1)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Чувство юмора', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Воображение', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Креативная и любит приключения', 1)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Расслабленная и беззаботная', 1)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Доминирующий характер', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Романтик', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Безопасность', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Средний уровень либидо', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Высокий уровень либидо', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Есть секретное любовное гнездышко', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Натуральная грудь', 1)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Красивая попка', 1)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Пью в компаниях', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Игры на раздевание', NULL)
+INSERT INTO Whatpartners (Whatpart, Smb) VALUES ('Разговоры о сексе', NULL)
+
 
 
 CREATE TABLE [dbo].[WhatpartnerUserProfils]

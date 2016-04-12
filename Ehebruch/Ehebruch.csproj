@@ -267,7 +267,6 @@
     <Content Include="Views\Shared\_LayoutBoot3.cshtml" />
     <Content Include="Views\Account\RegLogin.cshtml" />
     <Content Include="Views\Account\LoginPartial.cshtml" />
-    <Content Include="Views\Profile\UploadFoto.cshtml" />
     <Content Include="Views\Account\ContexName.cshtml" />
     <Content Include="Views\Profile\FotoShow.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />

@@ -2,10 +2,6 @@
 @using Ehebruch.Models.Account
 
 <br />
-<div class="col-md-12 text-center"> 
-    <a class="btn btn-default center-block" href="AddFoto" role="button">Добавить фото</a>
-    </div>
-    <br />
 
 @if (Model.Fotoes != null && Model.Fotoes.Count() > 0)
 {
@@ -14,7 +10,7 @@
     foreach (UserFoto item in Model.Fotoes)
     {
         string path = "../../Files/" + @item.Path;
-        <div id="results">
+        <div>
             <div class="row">
                 <div class="col-md-4">
                     <img src="@path" class="img-responsive" /></div>
