@@ -132,11 +132,16 @@ namespace Ehebruch.Controllers
         
         // GET: /Profile
         [Authorize]
-        public ActionResult Index()
+        public ActionResult Index(int Id = 0)
         {
             db.UserProfiles.Load();
             UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
-            UserProfile userprofile = db.UserProfiles.Where(p => p.UserLoginId == user.Id).FirstOrDefault();
+            //UserProfile userprofile = db.UserProfiles.Where(p => p.UserLoginId == user.Id).FirstOrDefault();
+            UserProfile userprofile;
+            if (Id == 0)
+                userprofile = db.UserProfiles.Where(p => p.UserLoginId == user.Id).FirstOrDefault();
+            else
+                userprofile = db.UserProfiles.Find(Id);
             if (userprofile == null)
                 return Redirect("/Profile/Create");
             var fotos = db.UserFotoes.Where(f => f.UserProfileId == userprofile.Id) //Получаем фото текущего профиля. 
@@ -173,24 +178,6 @@ namespace Ehebruch.Controllers
                 return HttpNotFound();
             }
             return View(userprofile);
-        }
-
-        //
-        // GET: /Profile/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            UserProfile userprofile = db.UserProfiles.Include(p => p.Country).Include(p => p.City).
-                Include(p => p.Region).Where(p => p.Id == id).FirstOrDefault();
-            userprofile.UserLogin = db.UserLogins.Find(userprofile.UserLoginId);
-            if (userprofile == null)
-            {
-                return HttpNotFound();
-            }
-            var fotos = db.UserFotoes.Where(f => f.UserProfileId == userprofile.Id) //Получаем фото текущего профиля. 
-                                        .OrderByDescending(f => f.UploadDate); // упорядочиваем по дате по убыванию            
-            userprofile.Fotoes = fotos;
-            return View("Index", userprofile);
         }
 
 
@@ -247,10 +234,9 @@ namespace Ehebruch.Controllers
                     if (user != null)
                     {
                         short wish = 0;
-                        foreach (short i in selectedwishes)
-                        {
-                            wish += i;
-                        }
+                        if (selectedwishes != null)
+                            foreach (short i in selectedwishes)
+                                wish += i;
 
                         request.UserLoginId = user.Id;
                         request.LastUpdateDate = DateTime.Now;

@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Ehebruch.Models.Region>
+<select id="region" name="RegionId" class ="form-control">
+    @foreach (var item in Model)
+    {
+        <option value="@item.Id">@item.Name</option>
+    }
+</select>
+
+<script type="text/javascript">
+    $(function () {
+        $('#region').change(function () {
+            // получаем выбранный id
+            var id = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetCity")/' + id,
+                success: function (data) {
+
+                    // заменяем содержимое присланным частичным представлением
+                    $('#sity').replaceWith(data);
+                }
+            });
+        })
+    })
+</script>

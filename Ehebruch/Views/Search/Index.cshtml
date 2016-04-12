@@ -176,7 +176,7 @@
                             <img src="@path" class="img-responsive" style="width: 64px; height: 64px;" />
                         </td>
                         <td>
-                            @Html.ActionLink(@prof.UserLogin.nic, "Details", "Profile", new { id = @prof.Id }, null), @prof.City.Name
+                            @Html.ActionLink(@prof.UserLogin.nic, "Index", "Profile", new { id = @prof.Id }, null), @prof.City.Name
                             <br />
                             <label class="control-label">@Html.DisplayFor(p => prof.dateOfBirthday)</label>
                         </td>
