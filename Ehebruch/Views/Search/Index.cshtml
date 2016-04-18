@@ -1,165 +1,110 @@
 ﻿@model Ehebruch.Models.SearchProfiles
 
 @{
-    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutBoot3.cshtml";
 }
 
 <div class="row">
-    <div class="col-md-6 col-md-offset-3">
+    <div class="col-md-12">
         @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
-            @Html.AntiForgeryToken()
             <h4>Поиск анкет</h4>
             <br />
-            @Html.ValidationSummary()
-    
             <div class="form-group">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="col-md-3">
-                            <label class="control-label">Ищу:</label>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="controls">
-                                @Html.DropDownListFor(model => model.SearchSex, new[]   { new SelectListItem() { Text = "Мужчину", Value = "true" }, 
-                                    new SelectListItem() { Text = "Женщину", Value = "false" }}, new { @class = "form-control" })
-                            </div>
-                        </div>
+                <div class="col-md-2">
+                    <label class="control-label">Ищу:</label>
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.SearchSex, new[]   { new SelectListItem() { Text = "Мужчину", Value = "true" }, 
+                            new SelectListItem() { Text = "Женщину", Value = "false" }}, new { @class = "form-control" })  
+                    </div>                   
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label">В возрасте от </label>
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.AgeFrom, new SelectList(Enumerable.Range(18, 99).Select(x => new { Value = x, Text = x }), "Value","Text"), "",
+                            new { @class = "form-control input-sm" })   
                     </div>
-                    <div class="col-md-6">
-                        <div class="col-md-4">
-                            <label class="control-label">Город:</label>
-                        </div>
-                        <div class="col-md-8">
-                            @Html.TextBoxFor(m => m.Sity, new { @class = "form-control" })
-                        </div>
+                 </div>
+                   
+                <div class="col-md-2">
+                    <label class="control-label"> до </label>
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.AgeFrom, new SelectList(Enumerable.Range(18, 99).Select(x => new { Value = x, Text = x }),"Value","Text"), "",
+                            new { @class = "form-control input-sm" })
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="row text-center">
-                            <label class="control-label">Возраст</label>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="controls">
-                                    @Html.DropDownListFor(model => model.AgeTo,
-                                    new SelectList(
-                                        Enumerable.Range(18, 99).Select(x => new { Value = x, Text = x }),
-                                        "Value",
-                                        "Text"),
-                                    new { @class = "form-control input-sm" })
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="controls">
-                                    @Html.DropDownListFor(model => model.AgeTo,
-                                    new SelectList(
-                                        Enumerable.Range(18, 99).Select(x => new { Value = x, Text = x }),
-                                        "Value",
-                                        "Text",
-                                        99),
-                                    new { @class = "form-control input-sm" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="col-md-4">
-                        <div class="row text-center">
 
-                            <label class="control-label">Рост от и до</label>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="controls">
-                                    @Html.DropDownListFor(model => model.heightFrom,
-                                    new SelectList(
-                                        Enumerable.Range(150, 200).Select(x => new { Value = x, Text = x }),
-                                        "Value",
-                                        "Text"),
+                <div class="col-md-2">
+                    <label class="control-label">Рост от </label>
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.heightFrom, new SelectList(Enumerable.Range(150, 200).Select(x => new { Value = x, Text = x }),"Value", "Text"), "",
                                     new { @class = "form-control input-sm" })
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="controls">
-                                    @Html.DropDownListFor(model => model.heightTo,
-                                    new SelectList(
-                                        Enumerable.Range(150, 200).Select(x => new { Value = x, Text = x }),
-                                        "Value",
-                                        "Text",
-                                        200),
-                                    new { @class = "form-control input-sm" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="row text-center">
-                            <label class="control-label">Вес (От и До)</label>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="controls">
-                                    @Html.DropDownListFor(model => model.weightFrom,
-                                    new SelectList(
-                                        Enumerable.Range(40, 150).Select(x => new { Value = x, Text = x }),
-                                        "Value",
-                                        "Text"),
-                                    new { @class = "form-control input-sm" })
-                                </div>
-                            </div>
-                            <div class="col-md-6 ">
-                                <div class="controls">
-                                    @Html.DropDownListFor(model => model.weightTo,
-                                    new SelectList(
-                                        Enumerable.Range(41, 150).Select(x => new { Value = x, Text = x }),
-                                        "Value",
-                                        "Text", 150),
-                                    new { @class = "form-control input-sm" })
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-5">
-                        <br />
-                        <label class="control-label">Ваши желания: </label>
-                        <br />
-                        <div class="checkbox">
-                            @foreach (KeyValuePair<string, int> c in ViewBag.wishe)
-                            {
-                                if ((string.IsNullOrEmpty(Model.SearchButton)) || ((Model.wish & c.Value) == c.Value))
-                                {
-                                    <input type="checkbox" name="wishe" value="@c.Value" checked/>@c.Key <br />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" name="wishe" value="@c.Value" />@c.Key <br />
-                                }
-                            }
-                        </div>
-                        <br />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <input type="submit" class="btn-group btn-group-justified" value="Поиск" name="SearchButton" />
-                        </div>
+                <div class="col-md-2">
+                    <label class="control-label">и до</label>
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.heightTo, new SelectList(Enumerable.Range(150, 200).Select(x => new { Value = x, Text = x }),"Value", "Text"), "",
+                                    new { @class = "form-control input-sm" })
                     </div>
                 </div>
             </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    @Html.LabelFor(m => m.CountryId, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.DropDownListFor(m => m.CountryId, ViewBag.Country as SelectList,"",  new { id = "country", @class = "col-md-2 form-control" })  
+                    </div>                   
+                </div>
+                <div class="col-md-2">
+                    @Html.LabelFor(m => m.RegionId, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.DropDownListFor(m => m.RegionId, ViewBag.Region as SelectList, "", new { id = "region", @class = "col-md-2 form-control" })  
+                    </div>                   
+                </div>
+                <div class="col-md-2">
+                    @Html.LabelFor(m => m.CityId, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.DropDownListFor(m => m.CityId, ViewBag.City as SelectList, "", new { id = "sity", @class = "col-md-2 form-control" })  
+                    </div>                   
+                </div>
+            </div>
+                            
+            <div class="form-group">
+                <div class="col-md-5">
+                    <br />
+                    <label class="control-label">Ваши желания: </label>
+                    <br />
+                    <div class="checkbox">
+                        @foreach (KeyValuePair<string, int> c in ViewBag.wishe)
+                        {
+                            if ((string.IsNullOrEmpty(Model.SearchButton)) || ((Model.wish & c.Value) == c.Value))
+                            {
+                                <input type="checkbox" name="wishe" value="@c.Value" checked/>@c.Key <br />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="wishe" value="@c.Value" />@c.Key <br />
+                            }
+                        }
+                    </div>
+                    <br />
+                </div>
+              </div>  
+            <div class="form-group">
+                <div class="col-md-2">
+                    <input type="submit" class="btn-group btn-group-justified" value="Поиск" name="SearchButton" />
+                </div>
+            </div>
+            
         
             // Результаты. 
 
             if (Model.Profiles != null && Model.Profiles.Count() > 0)
             {
-            <table class="table table-hover">
+            <div class="col-md-6    ">
+                <table class="table table-hover">
                 @foreach (var prof in Model.Profiles)
                 {
                     string path = "~/Files/" + @prof.AvatarPath;
@@ -176,14 +121,23 @@
                             <img src="@path" class="img-responsive" style="width: 64px; height: 64px;" />
                         </td>
                         <td>
-                            @Html.ActionLink(@prof.UserLogin.nic, "Index", "Profile", new { id = @prof.Id }, null), @prof.City.Name
+                            @Html.ActionLink(@prof.UserLogin.nic, "Index", "Profile", new { id = @prof.Id}, null)
                             <br />
-                            <label class="control-label">@Html.DisplayFor(p => prof.dateOfBirthday)</label>
+                            @if (!String.IsNullOrEmpty(prof.City.Name))
+                            {
+                                <label>Город: @Html.DisplayFor(p => prof.City.Name)</label>
+                            }
+                            <br />
+                            @if ((prof.Age ?? 0) != 0)
+                            {
+                                <label>@Html.DisplayFor(p => prof.Age) лет</label>
+                            }
                         </td>
                     </tr>
             
                 }
             </table>
+                </div>
             
             }
 
@@ -191,5 +145,41 @@
 
     </div>
 </div>
+
+@section Scripts{
+<script type="text/javascript">
+    $(function () {
+
+        $('#country').change(function ()
+        {
+            // получаем выбранный id
+            var id = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetRegion")/' + id,
+                success: function (data) {
+                     
+                    // заменяем содержимое присланным частичным представлением
+                    $('#region').replaceWith(data);
+                }
+            });
+        });
+
+        $('#region').change(function () {
+            // получаем выбранный id
+            var id = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetCity")/' + id,
+                success: function (data) {
+
+                    // заменяем содержимое присланным частичным представлением
+                    $('#sity').replaceWith(data);
+                }
+            });
+        })
+    })
+</script>
+}
 
 

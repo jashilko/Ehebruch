@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<Ehebruch.Models.Region>
 <select id="region" name="RegionId" class ="form-control">
-    <option value></option>
     @foreach (var item in Model)
     {
         <option value="@item.Id">@item.Name</option>

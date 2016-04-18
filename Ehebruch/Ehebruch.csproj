@@ -274,6 +274,8 @@
     <Content Include="Views\Message\Im.cshtml" />
     <Content Include="Views\Profile\GetRegion.cshtml" />
     <Content Include="Views\Profile\GetCity.cshtml" />
+    <Content Include="Views\Search\GetCity.cshtml" />
+    <Content Include="Views\Search\GetRegion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Files\" />
