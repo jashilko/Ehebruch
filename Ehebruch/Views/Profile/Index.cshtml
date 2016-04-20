@@ -7,8 +7,14 @@
 <div class="row">
     <div class="col-md-12">
        <div class="row"> 
-       
-           <div class="col-md-3"><h4>Ваш профиль, @Model.UserLogin.nic</h4></div> 
+        @if (@ViewContext.HttpContext.User.Identity.Name == Model.UserLogin.nic)
+        {
+            <div class="col-md-4"><h4>Ваш профиль, @Model.UserLogin.nic</h4></div> 
+        }else{
+            <div class="col-md-4"><h4>Профиль пользователя @Model.UserLogin.nic</h4></div>
+            <div class="col-md-2"><a class="btn btn-default" href="~/Message/Index/@Model.Id" role="button">Сообщение</a></div> 
+        }
+
        </div>
 
         @using (Html.BeginForm("Edit", "Profile", FormMethod.Get, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))

@@ -30,8 +30,8 @@
         <div class="row">
             @using (Html.BeginForm("Index", "Message", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
-                <input type="hidden" value="@ViewBag.rec.id" name="SenderId" />
-                <input type="hidden" value="@ViewBag.userwith.id" name="RecipientId" />
+                <input type="hidden" value="@ViewBag.rec.Id" name="SenderId" />
+                <input type="hidden" value="@ViewBag.userwith.Id" name="RecipientId" />
                 <div class="col-md-9">
                     <textarea class="form-control" rows="3" name="TextMessage"></textarea>
                 </div>

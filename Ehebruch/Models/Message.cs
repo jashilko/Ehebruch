@@ -9,7 +9,7 @@ namespace Ehebruch.Models
 {
     public class Message
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
         public int SenderId { get; set; }
         public UserProfile Sender { get; set; }
@@ -20,6 +20,7 @@ namespace Ehebruch.Models
         public String TextMessage { get; set; }
 
         public DateTime CreatedTime { get; set; }
+        public bool? Read { get; set; }
     }
 
     public class Dialog

@@ -276,6 +276,7 @@
     <Content Include="Views\Profile\GetCity.cshtml" />
     <Content Include="Views\Search\GetCity.cshtml" />
     <Content Include="Views\Search\GetRegion.cshtml" />
+    <Content Include="Views\Message\ExceptionFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Files\" />
