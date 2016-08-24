@@ -12,10 +12,10 @@ namespace Ehebruch.Models
         public int Id { get; set; }
 
         public int SenderId { get; set; }
-        public UserProfile Sender { get; set; }
+        public virtual UserProfile Sender { get; set; }
 
         public int RecipientId { get; set; }
-        public UserProfile Recipient { get; set; }
+        public virtual UserProfile Recipient { get; set; }
 
         public String TextMessage { get; set; }
 
