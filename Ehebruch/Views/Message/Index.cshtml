@@ -5,40 +5,79 @@
     Layout = "~/Views/Shared/_LayoutBoot3.cshtml";
 }
 
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <div class="row">
-            <h3>Сообщения</h3>
-        </div>
-        <table class="table table-hover">
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @item.SenderId - @item.RecipientId
-                    </td>
-                    <td>
-                        @item.CreatedTime
-                    </td>
-                    <td>@item.TextMessage
-                    </td>
-                </tr>                                
-            }
-
-        </table>
-        <div class="row">
-            @using (Html.BeginForm("Index", "Message", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                <input type="hidden" value="@ViewBag.rec.Id" name="SenderId" />
-                <input type="hidden" value="@ViewBag.userwith.Id" name="RecipientId" />
-                <div class="col-md-9">
-                    <textarea class="form-control" rows="3" name="TextMessage"></textarea>
+<div class="container bootstrap snippet">
+    <div class="row" style="height:100%">
+        <div class="col-md-6 col-md-offset-3" style="height:100%">
+            <div class="portlet portlet-default" style="height:100%">
+                <div class="portlet-heading">
+                    <div class="portlet-title">
+                        <h4><i class="fa fa-circle text-green"></i> Jane Smith</h4>
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
-                <div class="col-md-3">
-                    <input type="submit" value="Отправить" />
-                </div>                
-            }
+                <div id="chat" class="panel-collapse collapse in" style="height:100%">
+                    <div style="height:70%">
+                    <div id = "scrl" class="portlet-body chat-widget" style="overflow-y: auto; width: auto; height: 100%; max-height:500px; overflow-x: hidden">
+                        
+ 
+                        @foreach (var item in Model)
+                        {
+                            string path = "~/Files/" + @item.Sender.AvatarPath;
+                            string absolutePath = Server.MapPath(path);
+                            if (!File.Exists(absolutePath) && (@item.Sender.sex))
+                                path = "../../Files/avatars/einman.jpg";
+                            else if (!File.Exists(absolutePath) && (!@item.Sender.sex))
+                                path = "../../Files/avatars/einefrau.jpg";
+                            else
+                                path = "../../Files/" + @item.Sender.AvatarPath;
+                            
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="media">
+                                        <a class="pull-left" href="#">
+                                            
+
+                                            <img class="media-object img-circle" src="@path" alt="" style="width: 30px; height: 30px;">
+                                            
+                                        </a>
+                                        <div class="media-body">
+                                            <h4 class="media-heading">@item.Sender.UserLogin.nic
+                                                <span class="small pull-right">@item.CreatedTime</span>
+                                            </h4>
+                                            <p>@item.TextMessage</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <hr>    
+                        }
+    
+                    </div>
+                    </div>
+                    <div class="portlet-footer">
+                        @using (Html.BeginForm("Index", "Message", FormMethod.Post, new { @class = "form-group", role = "form" }))
+                        {
+					        <input type="hidden" value="@ViewBag.rec.Id" name="SenderId" />
+					        <input type="hidden" value="@ViewBag.userwith.Id" name="RecipientId" />
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Введите сообщение..." name="TextMessage"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-default pull-right">Send</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
+        <!-- /.col-md-4 -->
     </div>
-</div>
+</div>    
+
+@section Scripts{
+    <script type="text/javascript">
+        var block = document.getElementById("scrl");
+        block.scrollTop = block.scrollHeight;
+    </script>        
+}          

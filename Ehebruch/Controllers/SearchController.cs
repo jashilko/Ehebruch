@@ -20,14 +20,14 @@ namespace Ehebruch.Controllers
         private SelectList getSelectCountryList(int selectedIndex = 3159)
         {
             if (FSelectCountry == null)
-                FSelectCountry = new SelectList(db.Countries, "Id", "name", db.Countries.Where(c => c.Id == selectedIndex));
+                FSelectCountry = new SelectList(db.Countries.OrderByDescending(c => c.Priority), "Id", "name", db.Countries.Where(c => c.Id == selectedIndex));
             return FSelectCountry;
         }
 
         private SelectList getSelectRegionList(int CountryId = 0, int selectedReg = 0)
         {
             if (FSelectRegion == null)
-                FSelectRegion = new SelectList(db.Regions.Where(r => r.CountryId == CountryId).OrderBy(c => c.Name), 
+                FSelectRegion = new SelectList(db.Regions.Where(r => r.CountryId == CountryId).OrderByDescending(c => c.Priority).ThenBy(c => c.Name), 
                     "Id", "name", db.Regions.Where(r => r.Id == selectedReg));
             return FSelectRegion;
         }
@@ -35,7 +35,7 @@ namespace Ehebruch.Controllers
         private SelectList getSelectCityList(int RegionId = 0, int selectedCity = 0)
         {
             if (FSelectCity == null)
-                FSelectCity = new SelectList(db.Cities.Where(s => (s.RegionId == RegionId)),
+                FSelectCity = new SelectList(db.Cities.Where(s => (s.RegionId == RegionId)).OrderByDescending(c => c.Priority).ThenBy(c => c.Name),
                 "Id", "name", db.Cities.Where(c => c.Id == selectedCity));
             return FSelectCity;
         }
@@ -43,14 +43,14 @@ namespace Ehebruch.Controllers
         // Возвращаем Чп со списком регионов.
         public ActionResult GetRegion(int id)
         {
-            var reglist = db.Regions.Where(c => c.CountryId == id);
+            var reglist = db.Regions.Where(c => c.CountryId == id).OrderByDescending(c => c.Priority).ThenBy(c => c.Name);
             return PartialView(reglist.ToList());
         }
 
         // Возвращаем Чп со списком городов.
         public ActionResult GetCity(int id)
         {
-            return PartialView(db.Cities.Where(c => c.RegionId == id).ToList());
+            return PartialView(db.Cities.Where(c => c.RegionId == id).OrderByDescending(c => c.Priority).ThenBy(c => c.Name).ToList());
         }
 
         
