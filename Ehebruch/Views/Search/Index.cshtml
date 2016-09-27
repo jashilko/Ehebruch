@@ -123,9 +123,9 @@
                         <td>
                             @Html.ActionLink(@prof.UserLogin.nic, "Index", "Profile", new { id = @prof.Id}, null)
                             <br />
-                            @if (!String.IsNullOrEmpty(prof.City.Name))
+                            @if (!String.IsNullOrEmpty(prof.City.Name) || (!String.IsNullOrEmpty(prof.Country.Name)))
                             {
-                                <label>Город: @Html.DisplayFor(p => prof.City.Name)</label>
+                                <label> @Html.DisplayFor(p => prof.Country.Name) @Html.DisplayFor(p => prof.City.Name)</label>
                             }
                             <br />
                             @if ((prof.Age ?? 0) != 0)
