@@ -10,7 +10,7 @@
         {
             <h4>Заполните свой профиль</h4>
             <hr />
-            @Html.ValidationSummary()
+            @Html.ValidationSummary(true)
 
             <div class="form-group">
                 <div class="col-md-3">
@@ -107,9 +107,10 @@
                     <div class="checkbox">
                          @foreach (KeyValuePair<string, short> c in ViewBag.wishe)
                          {
-                                    <input type="checkbox" name="selectedwishes" value="@c.Value"/>@c.Key <br />
+                                    <input id="wish" type="checkbox" name="selectedwishes" value="@c.Value"/>@c.Key <br />
                          }                    
                     </div>
+                    @Html.ValidationMessageFor(model => model.wish)
                 </div>
 
                 <div class="col-md-3">
@@ -149,7 +150,7 @@
             
             <div class="form-group">
                 <div class="col-md-10">
-                    <input type="submit" class="btn btn-default" value="Сохранить" />
+                    <input id="" type="submit" class="btn btn-default" value="Сохранить" />
                 </div>
             </div>                           
             

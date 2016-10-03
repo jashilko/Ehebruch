@@ -41,6 +41,7 @@ namespace Ehebruch.Models.Account
 
         // Желание - битовая маска. 
         [Display(Name = "Желание")]
+        [Range(1, 2000, ErrorMessage = "Выберите одно из желаний")]
         public short? wish { get; set; }
 
         [Display(Name = "Рост")]

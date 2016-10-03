@@ -15,10 +15,6 @@
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
 
-    <!-- Custom styles for this template -->
-    <link href="navbar.css" rel="stylesheet">
-    <link href="signin.css" rel="stylesheet">
-
   </head>
 <body style="height: 100%">
 
@@ -97,7 +93,9 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    @Scripts.Render("~/scripts/jquery.validate.min.js")
     <script src="~/Scripts/bootstrap.min.js"></script>
+    <script data-require="angular.js@1.4.3" data-semver="1.4.3" src="https://code.angularjs.org/1.4.3/angular.js"></script>
     @RenderSection("Scripts", required: false)
 
   </body>

@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using Ehebruch.Models;
 using Ehebruch.Models.Account;
 
@@ -13,6 +14,13 @@ namespace Ehebruch.Controllers
 {
     public class ProfileController : Controller
     {
+        class CheckBoxlist
+        {
+            public short Id;
+            public string Name;
+            public bool Checked;
+        }
+
         private EhebruchContex db = new EhebruchContex();
         private SelectList FSelectCountry;
         private SelectList FSelectRegion;
@@ -181,6 +189,7 @@ namespace Ehebruch.Controllers
         }
 
 
+        
         //
         // GET: /Profile/Create
         [Authorize]
@@ -512,6 +521,27 @@ namespace Ehebruch.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
+        }
+
+        public ActionResult Temp()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public string getWish(int wish)
+        {
+            
+            var wishlist = new List<CheckBoxlist>();
+
+            wishlist.Add(new CheckBoxlist() { Id = 1, Name = "Флирт и переписка", Checked = (1 == (1 & wish)) });
+            wishlist.Add(new CheckBoxlist() { Id = 2, Name = "Встречи и свидания", Checked = (2 == (2 & wish)) });
+            wishlist.Add(new CheckBoxlist() { Id = 4, Name = "Быстрый секс", Checked = (4 == (4 & wish)) });
+            wishlist.Add(new CheckBoxlist() { Id = 8, Name = "Длительные отношения", Checked = (8 == (8 & wish)) });
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            string json = js.Serialize(wishlist);
+
+            return json;
         }
     }
 }
