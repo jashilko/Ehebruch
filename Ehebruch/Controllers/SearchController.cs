@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Ehebruch.Models;
 using System.Data.Entity;
+using System.Web.UI;
 
 namespace Ehebruch.Controllers
 {
@@ -17,6 +18,7 @@ namespace Ehebruch.Controllers
         
 
         // Получаем список стран. 
+        [OutputCache(Duration = 3600, Location = OutputCacheLocation.Any, VaryByParam = "selectedIndex")]
         private SelectList getSelectCountryList(int selectedIndex = 3159)
         {
             if (FSelectCountry == null)
@@ -24,6 +26,7 @@ namespace Ehebruch.Controllers
             return FSelectCountry;
         }
 
+        [OutputCache(Duration = 3600, Location = OutputCacheLocation.Any, VaryByParam = "CountryId;selectedReg")]
         private SelectList getSelectRegionList(int CountryId = 0, int selectedReg = 0)
         {
             if (FSelectRegion == null)
@@ -32,6 +35,7 @@ namespace Ehebruch.Controllers
             return FSelectRegion;
         }
 
+        [OutputCache(Duration = 3600, Location = OutputCacheLocation.Any, VaryByParam = "RegionId;selectedReg")]
         private SelectList getSelectCityList(int RegionId = 0, int selectedCity = 0)
         {
             if (FSelectCity == null)
@@ -41,6 +45,7 @@ namespace Ehebruch.Controllers
         }
 
         // Возвращаем Чп со списком регионов.
+        [OutputCache(Duration = 3600, Location = OutputCacheLocation.Any, VaryByParam = "id")]
         public ActionResult GetRegion(int id)
         {
             var reglist = db.Regions.Where(c => c.CountryId == id).OrderByDescending(c => c.Priority).ThenBy(c => c.Name);
@@ -48,6 +53,7 @@ namespace Ehebruch.Controllers
         }
 
         // Возвращаем Чп со списком городов.
+        [OutputCache(Duration = 3600, Location = OutputCacheLocation.Any, VaryByParam = "id")]
         public ActionResult GetCity(int id)
         {
             return PartialView(db.Cities.Where(c => c.RegionId == id).OrderByDescending(c => c.Priority).ThenBy(c => c.Name).ToList());
