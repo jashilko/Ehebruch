@@ -30,7 +30,7 @@ namespace Ehebruch.Controllers
                     db.SaveChanges();
                 }
                 // ищем пользователя. 
-                UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
+                UserLogin user = db.UserLogins.Where(m => m.email == HttpContext.User.Identity.Name).FirstOrDefault();
                 // Ищем его профиль. 
                 UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginId == user.Id).FirstOrDefault();
                 // С кем ведем беседу. 
@@ -81,7 +81,7 @@ namespace Ehebruch.Controllers
             }
             ViewBag.Mes = Mes;
             */
-            UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
+            UserLogin user = db.UserLogins.Where(m => m.email == HttpContext.User.Identity.Name).FirstOrDefault();
             UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginId == user.Id).FirstOrDefault();
             ViewBag.Rec = userprofile;
             return View("Index");
@@ -93,7 +93,7 @@ namespace Ehebruch.Controllers
         {
             try
             {
-                UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
+                UserLogin user = db.UserLogins.Where(m => m.email == HttpContext.User.Identity.Name).FirstOrDefault();
                 UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginId == user.Id).FirstOrDefault();
                 //UserProfile Recuser = db.UserProfiles.Find(id);
                 List<Message> MesList = new List<Message>();

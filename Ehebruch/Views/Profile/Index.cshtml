@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-md-12">
        <div class="row"> 
-        @if (@ViewContext.HttpContext.User.Identity.Name == Model.UserLogin.nic)
+        @if (@ViewContext.HttpContext.User.Identity.Name == Model.UserLogin.email)
         {
             <div class="col-md-4"><h4>Ваш профиль, @Model.UserLogin.nic</h4></div> 
         }else{

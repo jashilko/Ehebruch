@@ -8,11 +8,11 @@ namespace Ehebruch.Models.Account
 {
     public class LogViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "*")]
         [Display(Name = "Логин")]
-        public string UserName { get; set; }
+        public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "*")]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
         public string Password { get; set; }

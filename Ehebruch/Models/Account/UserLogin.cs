@@ -32,7 +32,7 @@ namespace Ehebruch.Models
         public string email { get; set; }
 
         [Display(Name = "Подтверждение")]
-        public short? confirm { get; set; }
+        public bool confirm { get; set; }
 
         [Required]
         [Display(Name = "Статус")]

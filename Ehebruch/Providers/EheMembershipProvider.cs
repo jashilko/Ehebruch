@@ -14,10 +14,10 @@ namespace Ehebruch.Providers
 {
     public class EheMembershipProvider : MembershipProvider
     {
-        public override bool ValidateUser(string nic, string password)
+        public override bool ValidateUser(string Email, string password)
         {
             bool isValid = false;
-            MembershipUser membershipUser = GetUser(nic, false);
+            MembershipUser membershipUser = GetUser(Email, false);
 
             if (membershipUser != null)
             {
@@ -36,8 +36,8 @@ namespace Ehebruch.Providers
          
         public MembershipUser CreateUser(string email, string password, string nic)
         {
-            MembershipUser membershipUser = GetUser(nic, false);
- 
+            MembershipUser membershipUser = GetUser(email, false);
+
             if (membershipUser == null)
             {
                 try
@@ -59,7 +59,7 @@ namespace Ehebruch.Providers
  
                         _db.UserLogins.Add(user);
                         _db.SaveChanges();
-                        membershipUser = GetUser(nic, false);
+                        membershipUser = GetUser(email, false);
                         return membershipUser;
                     }
                 }
@@ -71,25 +71,25 @@ namespace Ehebruch.Providers
             return null;
         }
  
-        public override MembershipUser GetUser(string nic, bool userIsOnline)
+        public override MembershipUser GetUser(string Email, bool userIsOnline)
         {
             try
             {
                 using (EhebruchContex _db = new EhebruchContex())
                 {
                     var users = from u in _db.UserLogins
-                                where u.nic == nic
+                                where u.email == Email
                                 select u;
                     if (users.Count() > 0)
                     {
-                        UserLogin user = users.First();
-                        MembershipUser memberUser = new MembershipUser("EheMembershipProvider", user.nic, null, null, null, null,
+                        UserLogin user = users.First();                    
+                        MembershipUser memberUser = new MembershipUser("EheMembershipProvider", user.email, null, null, null, null,
                             false, false, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue);
                         return memberUser;
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
                 return null;
             }

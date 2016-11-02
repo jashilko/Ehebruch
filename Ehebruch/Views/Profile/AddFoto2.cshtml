@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Добавление фото";
+    Layout = "~/Views/Shared/_LayoutBoot3.cshtml";
+}
+
+  <head>
+    <meta charset="utf-8" />
+    <title>Uploader</title>
+    <link data-require="bootstrap-css@2.3.2" data-semver="2.3.2" rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" />
+    <link rel="stylesheet" href="http://tamtakoe.ru/uploader/lib/fancybox/jquery.fancybox.css" />
+    <link rel="stylesheet" href="style.css" />
+    
+    <script data-require="jquery@1.9.1" data-semver="1.9.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script data-require="jqueryui@1.9.2" data-semver="1.9.2" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script src="http://tamtakoe.ru/uploader/lib/fancybox/jquery.fancybox.pack.js"></script>
+    <script src="http://tamtakoe.ru/uploader/lib/angular_1_2/angular.min.js"></script>
+    <script src="http://tamtakoe.ru/uploader/lib/angular_1_2/angular-resource.min.js"></script>
+
+    <script src="fancybox.js"></script>
+    <script src="ui.js"></script>
+    <script src="oi.list.js"></script>
+    <script src="oi.file.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <body id="ng-app" ng-app="uploaderApp" ng-controller="MyCtrl">
+    <div class="album">
+      <div class="file-button-area">
+          <input type="file" class="file-input" multiple="multiple" oi-file="uploadoptions">
+      </div>
+      <div class="error-area">
+          <div class="alert alert-error" ng-show="errors.length">              
+              <button class="close" ng-click="errors.length=0">&times;</button>
+              <span ng-repeat="error in errors | unique">{{error.msg}}<br/></span>
+          </div>
+      </div>
+      <div ng-show="uploading.length">
+        <div class="progress">
+          <div class="bar" ng-style="{'width': uploading.progress+'%'}"></div>
+        </div>
+      </div>
+      <ul class="upload-area" oi-file="uploadoptions" ui-sortable="{stop: sort}" ng-class="dropClass" ng-model="items">
+          <li class="file-item" ng-repeat="item in items">
+              <button type="button" class="close" ng-click="del($index, abort())">&times;</button>
+              <a href="{{getUrl(item, 'image')}}" ui-fancybox title="№ {{item.id}} <a href='http://tamtakoe.ru/uploader/{{item.original}}'>оригинал</a>"><img class="file-item-img" ng-src="{{getUrl(item, 'thumb')}}"></a>
+              <div ng-show="item.uploading">
+                  <div class="progress">
+                      <div class="bar" ng-style="{'width': item.progress+'%'}"></div>
+                  </div>
+              </div>
+          </li>
+      </ul>
+      Можно перетаскивать на серую область
+    </div>
+  </body>
+
+</html>

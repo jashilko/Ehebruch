@@ -67,7 +67,8 @@
                 
                 @if (@ViewContext.HttpContext.User.Identity.IsAuthenticated)
                 {
-                    <li>@Html.ActionLink("Вы - " + @ViewContext.HttpContext.User.Identity.Name, "Index", "Profile")</li>
+                    /*<li>@Html.ActionLink("Вы - " + @ViewContext.HttpContext.User.Identity.Name, "Index", "Profile")</li>*/
+                    <li>@Html.ActionLink("Вы - " + @ViewContext.HttpContext.Session["nic"], "Index", "Profile")</li>
                 }
                             
               

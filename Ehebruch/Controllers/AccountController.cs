@@ -7,6 +7,8 @@ using System.Web.Security;
 using Ehebruch.Models.Account;
 using Ehebruch.Models;
 using Ehebruch.Providers;
+using System.Net.Mail;
+using System.Data;
 
 
 namespace Ehebuch.Controllers
@@ -23,11 +25,37 @@ namespace Ehebuch.Controllers
         {
             return View();
         }
-        
-        public ActionResult ContexName()
+
+        // Выслать подтверждение почты.
+        private void SendMail(String Email)
         {
-            ViewBag.ContexName = "Костя";
-            return PartialView();
+            try
+            {
+                // Подтверждение регистрации по e-mail.
+                // наш email с заголовком письма
+                MailAddress from = new MailAddress("ehebruchconfirm@gmail.com", "Confirm registratuion EHEBRUCH");
+                // кому отправляем
+                MailAddress to = new MailAddress(Email);
+                // создаем объект сообщения
+                MailMessage m = new MailMessage(from, to);
+                // тема письма
+                m.Subject = "Email confirmation";
+                // текст письма - включаем в него ссылку
+                m.Body = string.Format("Для завершения регистрации перейдите по ссылке:" +
+                                "<a href=\"{0}\" title=\"Подтвердить регистрацию\">{0}</a>",
+                    Url.Action("ConfirmEmail", "Account", new { Email = Email }, Request.Url.Scheme));
+                m.IsBodyHtml = true;
+                // адрес smtp-сервера, с которого мы и будем отправлять письмо
+                SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.gmail.com", 587);
+                // логин и пароль
+                smtp.Credentials = new System.Net.NetworkCredential("ehebruchconfirm@gmail.com", "Kostya00");
+                smtp.EnableSsl = true;
+                smtp.Send(m);
+            }
+            catch
+            {
+                ;
+            }
         }
         
         [HttpPost]
@@ -35,9 +63,35 @@ namespace Ehebuch.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (Membership.ValidateUser(model.UserName, model.Password))
+                if (Membership.ValidateUser(model.Email, model.Password))
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+
+                    EhebruchContex db = new EhebruchContex();
+                    UserLogin user = db.UserLogins.Where(m => m.email == model.Email).FirstOrDefault();
+                    if (user != null)
+                    {
+                        if (user.confirm)
+                        {
+                            FormsAuthentication.SetAuthCookie(model.Email, model.RememberMe);
+
+                            UserProfile userprofile = db.UserProfiles.Where(p => p.UserLoginId == user.Id).FirstOrDefault();
+                            if (userprofile != null)
+                            {
+                                Session["nic"] = user.nic;
+                                Session["pid"] = userprofile.Id;
+                                Session["uid"] = user.Id;
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(String.Empty, "Не подтверждена почта, вам на Email выслано повторное подтверждение!");
+                            SendMail(user.email);
+                            return View(model);
+                        }
+
+                    }
+                    
+                    // Установка сессии: 
                     if (Url.IsLocalUrl(returnUrl))
                     {
                         return Redirect(returnUrl);
@@ -77,15 +131,47 @@ namespace Ehebuch.Controllers
 
                 if (membershipUser != null)
                 {
-                    FormsAuthentication.SetAuthCookie(model.Nic, false);
+                    FormsAuthentication.SetAuthCookie(model.Email, false);
+
+                    SendMail(model.Email);
+                    //return RedirectToAction("Confirm", "Account", new { Email = model.Email });
                     return RedirectToAction("Create", "Profile");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Ошибка при регистрации");
+                    ModelState.AddModelError("Email", "Ошибка при регистрации: Данный EMail уже зарегистрирован.");
                 }
             }
             return View("Register");
+        }
+
+        [AllowAnonymous]
+        public string Confirm(string Email)
+        {
+            
+            
+            return "На почтовый адрес " + Email + " Вам высланы дальнейшие" +
+                    "инструкции по завершению регистрации";
+        }
+
+        [AllowAnonymous]
+        public ActionResult ConfirmEmail(string Token, string Email)
+        {
+            using (EhebruchContex db = new EhebruchContex())
+            {
+                UserLogin user = db.UserLogins.Where(u => u.email == Email).FirstOrDefault();
+                if (user != null)
+                {
+                    user.confirm = true;
+                    db.Entry(user).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "Profile");
+                }
+                else
+                {
+                    return RedirectToAction("Confirm", "Account", new { Email = "" });
+                }
+            }
         }
 
         /*

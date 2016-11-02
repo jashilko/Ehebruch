@@ -143,7 +143,7 @@ namespace Ehebruch.Controllers
         public ActionResult Index(int Id = 0)
         {
             db.UserProfiles.Load();
-            UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
+            UserLogin user = db.UserLogins.Where(m => m.email == HttpContext.User.Identity.Name).FirstOrDefault();
             //UserProfile userprofile = db.UserProfiles.Where(p => p.UserLoginId == user.Id).FirstOrDefault();
             UserProfile userprofile;
             if (Id == 0)
@@ -239,7 +239,7 @@ namespace Ehebruch.Controllers
             {
                 if (request != null)
                 {
-                    UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
+                    UserLogin user = db.UserLogins.Where(m => m.email == HttpContext.User.Identity.Name).FirstOrDefault();
                     if (user != null)
                     {
                         short wish = 0;
@@ -296,7 +296,7 @@ namespace Ehebruch.Controllers
         public ActionResult Edit()
         {
             db.UserProfiles.Load();
-            UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
+            UserLogin user = db.UserLogins.Where(m => m.email == HttpContext.User.Identity.Name).FirstOrDefault();
             UserProfile userprofile = db.UserProfiles.Where(p => p.UserLoginId == user.Id).FirstOrDefault();
             if (userprofile == null)
                 return Redirect("/Profile/Create");
@@ -344,7 +344,7 @@ namespace Ehebruch.Controllers
                 if (request != null)
                 {
                     db.UserProfiles.Load();
-                    UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
+                    UserLogin user = db.UserLogins.Where(m => m.email == HttpContext.User.Identity.Name).FirstOrDefault();
                     //UserProfile userprofile = db.UserProfiles.Find(Id);
                     UserProfile userprofile = db.UserProfiles.Where(p => p.UserLoginId == user.Id).FirstOrDefault();
 
@@ -441,7 +441,7 @@ namespace Ehebruch.Controllers
         public ActionResult FotoShow()
         {
             db.UserProfiles.Load();
-            UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
+            UserLogin user = db.UserLogins.Where(m => m.email == HttpContext.User.Identity.Name).FirstOrDefault();
             UserProfile userprofile = db.UserProfiles.Where(p => p.UserLoginId == user.Id).FirstOrDefault();
             var fotos = db.UserFotoes.Where(f => f.UserProfileId == userprofile.Id) //Получаем фото текущего профиля. 
                             .OrderByDescending(f => f.UploadDate); // упорядочиваем по дате по убыванию
@@ -452,7 +452,7 @@ namespace Ehebruch.Controllers
         public ActionResult DeleteFoto(int fotoid)
         {
             UserFoto foto = db.UserFotoes.Find(fotoid);
-            UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
+            UserLogin user = db.UserLogins.Where(m => m.email == HttpContext.User.Identity.Name).FirstOrDefault();
             if (fotoid != null && user != null)
             {
                 db.UserFotoes.Remove(foto);
@@ -466,10 +466,12 @@ namespace Ehebruch.Controllers
         }
 
 
+        
+        
         [HttpGet]
         public ActionResult AddFoto()
         {
-            UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
+            UserLogin user = db.UserLogins.Where(m => m.email == HttpContext.User.Identity.Name).FirstOrDefault();
             UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginId == user.Id).FirstOrDefault();
             var fotos = db.UserFotoes.Where(f => f.UserProfileId == userprofile.Id) //Получаем фото текущего профиля. 
                             .OrderByDescending(f => f.UploadDate); // упорядочиваем по дате по убыванию            
@@ -485,7 +487,7 @@ namespace Ehebruch.Controllers
         [HttpPost]
         public ActionResult AddFoto(HttpPostedFileBase error, String descript)
         {
-            UserLogin user = db.UserLogins.Where(m => m.nic == HttpContext.User.Identity.Name).FirstOrDefault();
+            UserLogin user = db.UserLogins.Where(m => m.email == HttpContext.User.Identity.Name).FirstOrDefault();
             UserProfile userprofile = db.UserProfiles.Include(p => p.UserLogin).Where(p => p.UserLoginId == user.Id).FirstOrDefault();
             if (error != null)
             {

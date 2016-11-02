@@ -28,9 +28,9 @@ namespace Ehebruch.Providers
 
             EhebruchContex db = new EhebruchContex();
             // получаем id пользователя из таблицы Users по логину
-            int userId = db.UserLogins.Where(u => u.nic.Equals(username)).FirstOrDefault().id;
+            int userId = db.UserLogins.Where(u => u.nic.Equals(username)).FirstOrDefault().Id;
             // по этому id извлекаем профиль из таблицы профилей
-            UserProfile profile = db.UserProfiles.Where(u => u.UserLoginID == userId).FirstOrDefault();
+            UserProfile profile = db.UserProfiles.Where(u => u.UserLoginId == userId).FirstOrDefault();
             if (profile != null)
             {
                 foreach (SettingsProperty prop in collection)
@@ -62,9 +62,9 @@ namespace Ehebruch.Providers
 
             EhebruchContex db = new EhebruchContex();
             // получаем id пользователя из таблицы Users по логину
-            int userId = db.UserLogins.Where(u => u.nic.Equals(username)).FirstOrDefault().id;
+            int userId = db.UserLogins.Where(u => u.nic.Equals(username)).FirstOrDefault().Id;
             // по этому id извлекаем профиль из таблицы профилей
-            UserProfile profile = db.UserProfiles.Where(u => u.id == userId).FirstOrDefault();
+            UserProfile profile = db.UserProfiles.Where(u => u.Id == userId).FirstOrDefault();
             // если такой профиль уже есть изменяем его
             if (profile != null)
             {
@@ -84,7 +84,7 @@ namespace Ehebruch.Providers
                     profile.GetType().GetProperty(val.Property.Name).SetValue(profile, val.PropertyValue);
                 }
                 profile.LastUpdateDate = DateTime.Now;
-                profile.id = userId;
+                profile.Id = userId;
                 db.UserProfiles.Add(profile);
             }
             db.SaveChanges();

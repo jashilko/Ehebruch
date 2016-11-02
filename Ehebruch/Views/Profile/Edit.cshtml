@@ -9,7 +9,6 @@
         @using (Html.BeginForm("Edit", "Profile", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data", name="reviewForm", novalidate = ""}))
         {
             <h4>Заполните свой профиль</h4>
-            <div> reviewForm is {{reviewForm.$valid}} </div>
             <hr />
             @Html.ValidationSummary()
 

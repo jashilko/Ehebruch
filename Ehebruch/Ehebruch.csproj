@@ -143,18 +143,14 @@
     <Compile Include="Models\Account\UserProfile.cs" />
     <Compile Include="Models\SearchProfiles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scripts\Providers\EheMembershipProvider.cs" />
-    <Compile Include="Scripts\Providers\EheProfileProvider.cs" />
-    <Compile Include="Scripts\Providers\EheProvider.cs" />
+    <Compile Include="Providers\EheMembershipProvider.cs" />
+    <Compile Include="Providers\EheProfileProvider.cs" />
+    <Compile Include="Providers\EheProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Ehe.mdf" />
     <Content Include="App_Data\EHEB.mdf" />
     <Content Include="App_Data\EHEB_log.ldf">
       <DependentUpon>EHEB.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\Ehe_log.ldf">
-      <DependentUpon>Ehe.mdf</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -1063,12 +1059,16 @@
     <Content Include="Views\Message\ExceptionFound.cshtml" />
     <Content Include="Views\Profile\Temp.cshtml" />
     <Content Include="Scripts\version.json" />
+    <Content Include="Views\Profile\AddFoto2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Files\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
