@@ -18,7 +18,7 @@
                         <img src="@path" class="img-responsive" style="width: 64px; height: 64px;" />
                     </td>
                     <td>
-                        @item.nic.;
+                        @Html.ActionLink(@item.nic, "Index", "Profile", new { id = @item.IdPerson}, null)
                     </td>
                     <td>@Html.ActionLink("Сообщение - " + @item.TextMessage, "Index", new { id=@item.IdPerson });
                     </td>

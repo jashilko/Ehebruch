@@ -8,13 +8,13 @@ namespace Ehebruch.Models.Account
 {
     public class LogViewModel
     {
-        [Required(ErrorMessage = "*")]
-        [Display(Name = "Логин")]
+        [Required(ErrorMessage = "Неверный адрес почты")]
+        [Display(Name = "E-mail: ")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "*")]
+        [Required(ErrorMessage = "Неверный пароль")]
         [DataType(DataType.Password)]
-        [Display(Name = "Пароль")]
+        [Display(Name = "Пароль:")]
         public string Password { get; set; }
 
         [Required]
