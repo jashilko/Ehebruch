@@ -132,8 +132,8 @@ namespace Ehebuch.Controllers
                 if (membershipUser != null)
                 {
                     FormsAuthentication.SetAuthCookie(model.Email, false);
-
                     SendMail(model.Email);
+                    Session["nic"] = model.Nic;
                     //return RedirectToAction("Confirm", "Account", new { Email = model.Email });
                     return RedirectToAction("Create", "Profile");
                 }

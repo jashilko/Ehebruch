@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.Helpers;
 using System.Security.Cryptography;
@@ -17,18 +18,23 @@ namespace Ehebruch.Providers
         public override bool ValidateUser(string Email, string password)
         {
             bool isValid = false;
-            MembershipUser membershipUser = GetUser(Email, false);
 
-            if (membershipUser != null)
+            using (EhebruchContex _db = new EhebruchContex())
             {
                 try
                 {
-                    isValid = true;
+                    UserLogin user = (from u in _db.UserLogins
+                                 where u.email == Email
+                                 select u).FirstOrDefault();
+ 
+                    if (user != null &&  user.pass == password)
+                    {
+                        isValid = true;
+                    }
                 }
-                catch (Exception ex)
+                catch
                 {
                     isValid = false;
-                    string exe = ex.InnerException.Message;
                 }
             }
             return isValid;
@@ -37,7 +43,6 @@ namespace Ehebruch.Providers
         public MembershipUser CreateUser(string email, string password, string nic)
         {
             MembershipUser membershipUser = GetUser(email, false);
-
             if (membershipUser == null)
             {
                 try
@@ -56,7 +61,6 @@ namespace Ehebruch.Providers
                             user.RoleId = 2;
                         }
                         //user.confirm = 1;
- 
                         _db.UserLogins.Add(user);
                         _db.SaveChanges();
                         membershipUser = GetUser(email, false);
