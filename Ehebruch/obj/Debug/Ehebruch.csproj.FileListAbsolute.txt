@@ -30,3 +30,39 @@ c:\users\shilyaev\documents\visual studio 2012\Projects\Ehebruch\Ehebruch\bin\ru
 c:\users\shilyaev\documents\visual studio 2012\Projects\Ehebruch\Ehebruch\obj\Debug\Ehebruch.csprojResolveAssemblyReference.cache
 c:\users\shilyaev\documents\visual studio 2012\Projects\Ehebruch\Ehebruch\obj\Debug\Ehebruch.dll
 c:\users\shilyaev\documents\visual studio 2012\Projects\Ehebruch\Ehebruch\obj\Debug\Ehebruch.pdb
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\Ehebruch.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\Ehebruch.pdb
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\Microsoft.Web.Infrastructure.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Net.Http.Formatting.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Web.Http.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Web.Http.WebHost.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Web.Mvc.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Web.Razor.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Web.WebPages.Deployment.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Web.WebPages.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Web.WebPages.Razor.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\EntityFramework.xml
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\Microsoft.Web.Infrastructure.xml
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\Newtonsoft.Json.xml
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Net.Http.Formatting.xml
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Web.Http.xml
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Web.Http.WebHost.xml
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Web.Mvc.xml
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Web.Razor.xml
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Web.WebPages.xml
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Web.WebPages.Deployment.xml
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\System.Web.WebPages.Razor.xml
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\ru\EntityFramework.resources.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\ru\System.Net.Http.Formatting.resources.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\ru\System.Web.Http.resources.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\ru\System.Web.Http.WebHost.resources.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\ru\System.Web.Mvc.resources.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\ru\System.Web.Optimization.resources.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\ru\System.Web.Providers.resources.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\ru\System.Web.Razor.resources.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\ru\System.Web.WebPages.resources.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\ru\System.Web.WebPages.Deployment.resources.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\bin\ru\System.Web.WebPages.Razor.resources.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\obj\Debug\Ehebruch.csprojResolveAssemblyReference.cache
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\obj\Debug\Ehebruch.dll
+D:\_Kostya\Ehebruch\Ehebruch\Ehebruch\obj\Debug\Ehebruch.pdb
