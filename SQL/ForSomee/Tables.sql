@@ -153,3 +153,26 @@ CREATE TABLE [dbo].[Messages] (
     [Read]        BIT           DEFAULT ((0)) NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+/*Сообщения */
+IF not exists (select 1 from information_schema.tables where table_name = 'Messages')
+CREATE TABLE [dbo].[Messages] (
+    [Id]          INT           IDENTITY (1, 1) NOT NULL,
+    [SenderId]    INT           NOT NULL,
+    [RecipientId] INT           NOT NULL,
+    [TextMessage] VARCHAR (MAX) COLLATE SQL_Latin1_General_CP1251_CS_AS DEFAULT ('') NULL,
+    [CreatedTime] SMALLDATETIME NOT NULL,
+    [Read]        BIT           DEFAULT ((0)) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+IF not exists (select 1 from information_schema.tables where table_name = 'UserFotoes')
+CREATE TABLE [dbo].[UserFotoes] (
+    [Id]            INT           IDENTITY (1, 1) NOT NULL,
+    [Path]          VARCHAR (100) NOT NULL,
+    [Descript]      TEXT          COLLATE SQL_Latin1_General_CP1251_CS_AS DEFAULT ('') NULL,
+    [UploadDate]    SMALLDATETIME NULL,
+    [UserProfileId] INT           NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
